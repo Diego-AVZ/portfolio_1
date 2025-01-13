@@ -9,3 +9,8 @@ FlowFi is an all-in-one DeFi protocol designed to showcase advanced Solidity dev
 - **Unified Management:** Streamline DeFi operations in one place.  
 - **Simplified Strategies:** Access multiple protocols with ease.  
 - **Best-in-Class UX:** Focus on delivering a seamless and intuitive user experience.  
+
+## Architecture
+```ml
+|-- src
+|--    |-- interfaces
