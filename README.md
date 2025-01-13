@@ -10,8 +10,35 @@ FlowFi is an all-in-one DeFi protocol designed to showcase advanced Solidity dev
 - **Simplified Strategies:** Access multiple protocols with ease.  
 - **Best-in-Class UX:** Focus on delivering a seamless and intuitive user experience.  
 
-## Architecture
+## **Architecture**
+
+I design **modular structures** for my smart contract projects to ensure:  
+- **Scalability:** Easily adaptable for future growth.  
+- **Legibility:** Clear and maintainable codebase.  
+- **Upgradeability:** Seamless integration of updates without disrupting the system.  
+
+The architecture follows this structure:  
+
+### **1. Main**  
+- Serves as the primary entry point for **frontend developers**, simplifying their work.  
+- Allows interaction with the entire protocol using a single ABI.  
+- Centralizes function calls, delegating execution to the appropriate contracts.  
+
+### **2. Executors**  
+- Contains the **core logic** of the protocol.  
+- Handles all computations and data modifications.  
+- Designed for modularity, ensuring clear separation of responsibilities.  
+
+### **3. Storage**  
+- Dedicated to storing the protocol's most critical data.  
+- Ensures data integrity and protects it from updates to other contracts.  
+- Acts as the foundation of the protocol's **data persistence layer**.  
+  
+
+## Project Structure
 ```ml
 |-- src
 |   |-- interfaces
 |   |   |-- IERC20.sol
+```
+
