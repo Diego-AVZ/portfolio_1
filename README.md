@@ -39,6 +39,6 @@ The architecture follows this structure:
 |-- src
 |   |-- interfaces
 |   |   |-- IERC20.sol
-|   |   |-- IERC721.sol
+|   |   |-- IERC20.sol
 ```
 
