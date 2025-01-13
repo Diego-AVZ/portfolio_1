@@ -13,4 +13,5 @@ FlowFi is an all-in-one DeFi protocol designed to showcase advanced Solidity dev
 ## Architecture
 ```ml
 |-- src
-|--    |-- interfaces
+|   |-- interfaces
+|   |   |-- IERC20.sol
