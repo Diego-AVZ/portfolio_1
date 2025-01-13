@@ -33,10 +33,10 @@ contract walletContract {
     function action(bytes calldata _actionData) public {
         bytes4 functionSelector = abi.decode(_actionData[:4], (bytes4));
         uint256[] memory paramsTypes = abi.decode(_actionData[4:], (uint256[]));
-        UsersLib.DeFiParam memory param;
         UsersLib.DeFiParam[] memory params = new UsersLib.DeFiParam[](paramsTypes.length);
         uint256 offset = 36; // (FuncSelector == 4) +(ParamsTypesArray == 32) == 36
         for(uint256 i = 0; i < paramsTypes.length; i++){
+            UsersLib.DeFiParam memory param;
             if(paramsTypes[i] == 0){
                 param.w = abi.decode(_actionData[offset:offset+32], (address));
                 offset += 32;
@@ -52,6 +52,7 @@ contract walletContract {
             } else {
                 revert InvalidParams("action");
             }
+            params[i] = param;
         }
     }
 
