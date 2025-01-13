@@ -34,11 +34,11 @@ The architecture follows this structure:
 - Acts as the foundation of the protocol's **data persistence layer**.  
   
 
-## Project Structure
+## Project Structure: **Contracts**
 ```ml
 |-- src
 |   |-- interfaces
 |   |   |-- IERC20.sol
-|   |   |-- IERC20.sol
+|   |   |-- IERC721.sol
 ```
 
