@@ -40,5 +40,10 @@ The architecture follows this structure:
 |   |-- interfaces
 |   |   |-- IERC20.sol
 |   |   |-- IERC721.sol
+|   |-- lib
+|   |   |-- Users.sol
+|   |-- MainDataStorage.sol
+|   |-- Roles.sol
+
 ```
 
