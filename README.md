@@ -1,66 +1,44 @@
-## Foundry
+# AVZ.Tech Portfolio Project: **FlowFi**
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## What is **FlowFi**?
+FlowFi is an all-in-one DeFi protocol designed to showcase advanced Solidity development skills. This protocol enables users to manage their decentralized finance (DeFi) activities seamlessly through a single contract. The primary objective is to simplify DeFi by integrating multiple protocols and strategies into a unified DeFi Hub with an exceptional user experience (UX).
 
-Foundry consists of:
+> FlowFi is a testament to @AVZ.Tech's expertise in DeFi protocols, Solidity development, and data management capabilities.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+### **Highlights**  
+- **Unified Management:** Streamline DeFi operations in one place.  
+- **Simplified Strategies:** Access multiple protocols with ease.  
+- **Best-in-Class UX:** Focus on delivering a seamless and intuitive user experience.  
 
-## Documentation
+## **Architecture**
+I design **modular structures** for my smart contract projects to ensure:  
+- **Scalability:** Easily adaptable for future growth.  
+- **Legibility:** Clear and maintainable codebase.  
+- **Upgradeability:** Seamless integration of updates without disrupting the system.  
 
-https://book.getfoundry.sh/
+The architecture follows this structure:  
 
-## Usage
+### **1. Main**  
+- Serves as the primary entry point for **frontend developers**, simplifying their work.  
+- Allows interaction with the entire protocol using a single ABI.  
+- Centralizes function calls, delegating execution to the appropriate contracts.  
 
-### Build
+### **2. Executors**  
+- Contains the **core logic** of the protocol.  
+- Handles all computations and data modifications.  
+- Designed for modularity, ensuring clear separation of responsibilities.  
 
-```shell
-$ forge build
+### **3. Storage**  
+- Dedicated to storing the protocol's most critical data.  
+- Ensures data integrity and protects it from updates to other contracts.  
+- Acts as the foundation of the protocol's **data persistence layer**.  
+  
+
+## Project Structure
+```ml
+|-- src
+|   |-- interfaces
+|   |   |-- IERC20.sol
+|   |   |-- IERC721.sol
 ```
 
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
