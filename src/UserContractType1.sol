@@ -39,6 +39,7 @@ contract WalletContract {
      /////////////////  ERRORS  //////////////////
     /////////////////////////////////////////////
     error InvalidParams(string functionName);
+    error MaxParamsReached(uint256 totalParms);
 
 
       ////////////////////////////////////////////
@@ -48,28 +49,35 @@ contract WalletContract {
     event DeFiActionExecuted(bytes4 functionSelector, ParamManagerLib.DeFiParam[] params);
     event ContractFunded(address token, uint256 value);
 
+      ////////////////////////////////////////////
+     ////////////////  MAPPINGS  ////////////////
+    ////////////////////////////////////////////
+    mapping(address => uint256) internal portfolio;
+
     receive() external payable{
         require(msg.value > 0, "Send more Ether");
         emit EtherReceived(msg.sender, msg.value);
     }
 
-    function fundContract(address _token, uint256 _value) public payable {
-        if(_token == address(0) && msg.value == 0) revert InvalidParams("fundContract");
-        if(_token != address(0) && msg.value > 0) revert InvalidParams("fundContract");
-        if(_token != address(0) && _value == 0) revert InvalidParams("fundContract");
+    function depositFunds(address _token, uint256 _value) public payable {
+        if(_token == address(0) && msg.value == 0) revert InvalidParams("depositFunds");
+        if(_token != address(0) && msg.value > 0) revert InvalidParams("depositFunds");
+        if(_token != address(0) && _value == 0) revert InvalidParams("depositFunds");
         uint256 value;
         if(_token == address(0)){
             value = msg.value;
         } else {
             value = _value;
             IERC20(_token).transferFrom(msg.sender, address(this), _value);
+            portfolio[_token] += _value;
         }
         emit ContractFunded(_token, value);
     }
 
-    function action(bytes calldata _actionData, address _signer) public payable accessControl(_signer) {
+    function defiAction(bytes calldata _actionData, address _signer) public payable accessControl(_signer) {
         bytes4 functionSelector = abi.decode(_actionData[:4], (bytes4));
         uint256[] memory paramsTypes = abi.decode(_actionData[4:36], (uint256[]));
+        if(paramsTypes.length > 10) revert MaxParamsReached(paramsTypes.length);
         ParamManagerLib.DeFiParam[] memory params = new ParamManagerLib.DeFiParam[](paramsTypes.length);
         uint256 offset = 36; // (FuncSelector == 4) +(ParamsTypesArray == 32) == 36
         for(uint256 i = 0; i < paramsTypes.length; i++){
@@ -77,27 +85,32 @@ contract WalletContract {
             if(paramsTypes[i] == 0){
                 param._type = 0;
                 param.w = abi.decode(_actionData[offset:offset+32], (address));
-                offset += 32;
             } else if(paramsTypes[i] == 1){
                 param._type = 1;
                 param.x = abi.decode(_actionData[offset:offset+32], (uint256));
-                offset += 32;
             } else if(paramsTypes[i] == 2){
                 param._type = 2;
                 param.y = abi.decode(_actionData[offset:offset+32], (int256));
-                offset += 32;
             } else if(paramsTypes[i] == 3){
                 param._type = 3;
                 param.z = abi.decode(_actionData[offset:offset+32], (bool));
-                offset += 32;
             } else {
                 revert InvalidParams("action");
             }
             params[i] = param;
+            offset += 32;
         }
         functions.functionRouter{value : msg.value}(functionSelector, params);
         emit DeFiActionExecuted(functionSelector, params);
     }
 
+
+      ////////////////////////////////////////////
+     ////////////  READ FUNCTIONS  //////////////
+    ////////////////////////////////////////////
+
+    function getContractEtherBalance() public view returns(uint256){
+        return address(this).balance;
+    }
 
 }
