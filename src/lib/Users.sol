@@ -11,12 +11,4 @@ library UsersLib {
         uint8 contractType;
     }
 
-    struct DeFiParam {
-        address w;
-        uint256 x;
-        int256 y;
-        bool z;
-
-    }
-
 }
