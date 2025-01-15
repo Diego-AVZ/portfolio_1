@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {ParamManagerLib} from "./Lib/Params.sol";
+import {ParamManagerLib} from "./lib/Params.sol";
 
 contract Functions {
 

@@ -38,12 +38,16 @@ The architecture follows this structure:
 ```ml
 |-- src
 |   |-- interfaces
-|   |   |-- IERC20.sol
-|   |   |-- IERC721.sol
+|   |   |-- IFunctions.sol
 |   |-- lib
 |   |   |-- Users.sol
+|   |   |-- Params.sol
+|   |-- admins
+|   |   |-- Roles.sol
 |   |-- MainDataStorage.sol
-|   |-- Roles.sol
+|   |-- Factory.sol
+|   |-- Functions.sol
+|   |-- UserContractType1.sol
 
 ```
 

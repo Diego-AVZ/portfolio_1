@@ -2,7 +2,8 @@
 pragma solidity ^0.8.24;
 
 import {Roles} from "./admins/Roles.sol";
-import {ParamManagerLib} from "./Lib/Params.sol";
+import {ParamManagerLib} from "./lib/Params.sol";
+import {DataDecoder} from "./lib/Decoder.sol";
 import {IFunctions} from "./interfaces/IFunctions.sol";
 import {IERC20} from "../lib/openzeppelin/contracts/interfaces/IERC20.sol";
 
@@ -12,6 +13,8 @@ import {IERC20} from "../lib/openzeppelin/contracts/interfaces/IERC20.sol";
 *         Type1 means that user can use this contract as wallet to hold Funds
 */
 contract WalletContract {
+
+    using DataDecoder for bytes;
 
     mapping(address => bool) public owners; 
 
@@ -39,8 +42,6 @@ contract WalletContract {
      /////////////////  ERRORS  //////////////////
     /////////////////////////////////////////////
     error InvalidParams(string functionName);
-    error MaxParamsReached(uint256 totalParms);
-
 
       ////////////////////////////////////////////
      /////////////////  EVENTS  /////////////////
@@ -60,9 +61,10 @@ contract WalletContract {
     }
 
     function depositFunds(address _token, uint256 _value) public payable {
-        if(_token == address(0) && msg.value == 0) revert InvalidParams("depositFunds");
-        if(_token != address(0) && msg.value > 0) revert InvalidParams("depositFunds");
-        if(_token != address(0) && _value == 0) revert InvalidParams("depositFunds");
+        if(_token == address(0) && msg.value == 0 || 
+           _token != address(0) && msg.value > 0 ||
+           _token != address(0) && _value == 0 
+        ) revert InvalidParams("depositFunds");
         uint256 value;
         if(_token == address(0)){
             value = msg.value;
@@ -75,33 +77,30 @@ contract WalletContract {
     }
 
     function defiAction(bytes calldata _actionData, address _signer) public payable accessControl(_signer) {
-        bytes4 functionSelector = abi.decode(_actionData[:4], (bytes4));
-        uint256[] memory paramsTypes = abi.decode(_actionData[4:36], (uint256[]));
-        if(paramsTypes.length > 10) revert MaxParamsReached(paramsTypes.length);
-        ParamManagerLib.DeFiParam[] memory params = new ParamManagerLib.DeFiParam[](paramsTypes.length);
-        uint256 offset = 36; // (FuncSelector == 4) +(ParamsTypesArray == 32) == 36
-        for(uint256 i = 0; i < paramsTypes.length; i++){
-            ParamManagerLib.DeFiParam memory param;
-            if(paramsTypes[i] == 0){
-                param._type = 0;
-                param.w = abi.decode(_actionData[offset:offset+32], (address));
-            } else if(paramsTypes[i] == 1){
-                param._type = 1;
-                param.x = abi.decode(_actionData[offset:offset+32], (uint256));
-            } else if(paramsTypes[i] == 2){
-                param._type = 2;
-                param.y = abi.decode(_actionData[offset:offset+32], (int256));
-            } else if(paramsTypes[i] == 3){
-                param._type = 3;
-                param.z = abi.decode(_actionData[offset:offset+32], (bool));
-            } else {
-                revert InvalidParams("action");
-            }
-            params[i] = param;
-            offset += 32;
-        }
+        (bytes4 functionSelector, ParamManagerLib.DeFiParam[] memory params) = _actionData.dataDecoder();
         functions.functionRouter{value : msg.value}(functionSelector, params);
         emit DeFiActionExecuted(functionSelector, params);
+    }
+
+
+    // INteract with anothe protocol
+    /*  
+        Protocol crea un CustomMain{} que llama a nuestro Main (a CustomMain le llamarán desde su front)
+        Protocol tiene su contract y su funcion a la que quiere llamar
+        1. buildHexData(); con funcitonSelector
+        2. Mi MAIN.mainDefiActionCustom(hexData) llama con hexData
+        3 en este contrato
+        function extraDefiActions(){
+            hace llamada .call con msg.data para que el fallback del contrato de Protocol lo detecte
+            * problema es que e fallback debe estar diseñada para pillar la data
+            * el protocol debera desplegar otro contrato con la interface a llamar y la address a llamar
+            * voy a crear un nuevo contrato a modo de SDK para que los protocols puedan usarlo y configurarlo facilmente
+        }
+    */
+
+    function extraDefiActions(bytes calldata _data, address _signer, address _customizedContract) external payable accessControl(_signer){
+        (bytes4 functionSelector, ParamManagerLib.DeFiParam[] memory params) = _data.dataDecoder();
+        IFunctions(_customizedContract).functionRouter{value : msg.value}(functionSelector, params);
     }
 
 
