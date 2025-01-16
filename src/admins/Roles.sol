@@ -10,6 +10,10 @@ contract Roles {
 
     address public constant ADMIN1 = 0x132adfe17b67f91573f3853DB9682D9E937e3C91;
 
+    constructor(){
+        isAdmin[ADMIN1] = true;
+    }
+
     struct Contract {
         bool isProtocolContract;
         string name;
