@@ -77,4 +77,8 @@ contract MainDataStorage {
             emit UserCreated(_newUser, _newContract);
     }
 
+    function getUserData(address account) external view returns(UsersLib.User memory){
+        return(clients[account]);
+    }
+
 }

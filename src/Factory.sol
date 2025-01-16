@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {WalletContract} from "./UserContractType1.sol";
+import {WalletContract} from "./WalletContract.sol";
 import {MainDataStorage} from "./MainDataStorage.sol";
 
 contract Factory {

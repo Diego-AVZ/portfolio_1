@@ -44,6 +44,11 @@ The architecture follows this structure:
 |   |   |-- Params.sol
 |   |-- admins
 |   |   |-- Roles.sol
+|   |-- SDK
+|   |   |-- scripts
+|   |   |   |-- BuildData.mjs
+|   |   |-- CustomFunctions.sol
+|   |   |-- README.MD
 |   |-- MainDataStorage.sol
 |   |-- Factory.sol
 |   |-- Functions.sol

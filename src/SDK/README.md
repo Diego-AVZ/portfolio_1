@@ -33,7 +33,7 @@
 
 - Call the `MainContract.defiAction()` function with the following parameters:
 - `bytes _data`
-- `address user`
+- `address yourCustomContract`
 
 ---
 
