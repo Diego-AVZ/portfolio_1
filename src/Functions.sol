@@ -5,11 +5,12 @@ import {ParamManagerLib} from "./lib/Params.sol";
 
 contract Functions {
 
-    function functionRouter(bytes4 _funcSelector, ParamManagerLib.DeFiParam[] memory _params) external payable{
+    function functionRouter(bytes4 _funcSelector, ParamManagerLib.DeFiParam[] memory _params) external payable returns(bool){
         bytes4 f = _funcSelector;
         ParamManagerLib.DeFiParam[] memory p = _params;
+        bool success;
         if(f == 0xee5b3814){
-            swap(p[0].w, p[1].w, p[2].x, p[3].x);
+            success = swap(p[0].w, p[1].w, p[2].x, p[3].x);
         } else if(f == 0x88bd413e){
             addLiquidity01(p[0].x, uint24(p[1].x), int24(p[2].y), int24(p[3].y), p[4].x, p[5].x);
         } else {
@@ -22,7 +23,7 @@ contract Functions {
             address tokenOut,
             uint256 amountIn,
             uint256 amountOutMin
-        ) internal {
+        ) internal returns(bool){
         /*executor.swap();*/
     }
 

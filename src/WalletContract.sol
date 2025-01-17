@@ -20,10 +20,10 @@ contract WalletContract {
 
     IFunctions public functions;
 
-    constructor(address _owner, address _secondOwner) {
+    constructor(address _owner, address _secondOwner, address _funct) {
         owners[_owner] = true;
         if(_secondOwner != address(0)) owners[_secondOwner] = true; 
-        functions = IFunctions(address(0x123));
+        functions = IFunctions(_funct);
     }
 
     /** 
@@ -76,10 +76,15 @@ contract WalletContract {
         emit ContractFunded(_token, value);
     }
 
-    function defiAction(bytes[] calldata _actionData, address _signer) public payable accessControl(_signer) {
+    function withdrawFunds(address _token, uint256 _value, address _signer, address _recipient) public accessControl(_signer){
+        IERC20(_token).transfer(_recipient, _value);
+    }
+
+    function defiAction(bytes[] calldata _actionData, address _signer) public payable accessControl(_signer) returns(bool) {
         (bytes4 functionSelector, ParamManagerLib.DeFiParam[] memory params) = _actionData.dataDecoder();
-        functions.functionRouter{value : msg.value}(functionSelector, params);
+        bool success = functions.functionRouter{value : msg.value}(functionSelector, params);
         emit DeFiActionExecuted(functionSelector, params);
+        return success;
     }
 
 

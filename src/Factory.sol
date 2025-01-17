@@ -12,8 +12,9 @@ contract Factory {
         data = MainDataStorage(_data);
     }
     
-    function deployNewContract(address _newUser) public {
-        WalletContract _newContract = new WalletContract(_newUser, address(0));
+    // Check method to get functions contract (and others)
+    function deployNewContract(address _newUser, address functions) public {
+        WalletContract _newContract = new WalletContract(_newUser, address(0), functions);
         data.createUser(_newUser, address(_newContract), 1);
     }
     

@@ -5,6 +5,6 @@ import {ParamManagerLib} from "../lib/Params.sol";
 
 interface IFunctions {
 
-    function functionRouter(bytes4 _funcSelector, ParamManagerLib.DeFiParam[] memory _params) external payable;
+    function functionRouter(bytes4 _funcSelector, ParamManagerLib.DeFiParam[] memory _params) external payable returns(bool);
 
 }

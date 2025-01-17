@@ -1,9 +1,9 @@
 import { AbiCoder } from "ethers";
 
 
-const functionSelector = "0x88bd413e";
-const paramTypes = [3,1,0];
-const params = [true,9999,"0x43D218197E8c5FBC0527769821503660861c7045"];
+const functionSelector = "0xee5b3814";
+const paramTypes = [];
+const params = [];
 
 function buildData(){
     const abiCoder = new AbiCoder();
