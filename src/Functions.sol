@@ -17,7 +17,7 @@ contract Functions {
         } else if(f == 0x88bd413e){
             addLiquidity01(p[0].x, uint24(p[1].x), int24(p[2].y), int24(p[3].y), p[4].x, p[5].x);
         }else if(f == 0x88bd413e){
-            uniswapSwap();
+            //uniswapSwap();
         } else {
             revert("Invalid function selector");
         }
@@ -56,7 +56,7 @@ contract Functions {
                 {
                     tokenIn : tokenIn,
                     tokenOut : tokenOut,
-                    fee : _fee,
+                    fee : 330, // _FEE
                     recipient : recipient,
                     deadline : 10000,
                     amountIn : amountIn,
