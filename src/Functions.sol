@@ -2,8 +2,11 @@
 pragma solidity ^0.8.24;
 
 import {ParamManagerLib} from "./lib/Params.sol";
+import {ISwapRouter} from "../lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 
 contract Functions {
+
+    ISwapRouter public swapRouter;
 
     function functionRouter(bytes4 _funcSelector, ParamManagerLib.DeFiParam[] memory _params) external payable returns(bool){
         bytes4 f = _funcSelector;
@@ -13,6 +16,8 @@ contract Functions {
             success = swap(p[0].w, p[1].w, p[2].x, p[3].x);
         } else if(f == 0x88bd413e){
             addLiquidity01(p[0].x, uint24(p[1].x), int24(p[2].y), int24(p[3].y), p[4].x, p[5].x);
+        }else if(f == 0x88bd413e){
+            uniswapSwap();
         } else {
             revert("Invalid function selector");
         }
@@ -36,6 +41,29 @@ contract Functions {
             uint256 amount1
         ) internal {
         /*executor.addLiquidity01();*/
+    }
+
+    function uniswapSwap(
+            address tokenIn,
+            address tokenOut,
+            address recipient,
+            uint256 deadline,
+            uint256 amountIn,
+            uint256 amountOutMinimum,
+            uint160 sqrtPriceLimitX96
+        ) internal {
+            ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams(
+                {
+                    tokenIn : tokenIn,
+                    tokenOut : tokenOut,
+                    fee : _fee,
+                    recipient : recipient,
+                    deadline : 10000,
+                    amountIn : amountIn,
+                    amountOutMinimum : amountOutMinimum,
+                    sqrtPriceLimitX96 : sqrtPriceLimitX96
+                }
+            );
     }
 
 }
