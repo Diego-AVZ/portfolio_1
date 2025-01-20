@@ -7,8 +7,8 @@ library DataDecoder {
 
     error MaxParamsReached(uint256 totalParms);
     error InvalidParams(string functionName);
-
-
+    /** 
+    */
     function dataDecoder(bytes[] calldata _data) internal pure returns(bytes4, ParamManagerLib.DeFiParam[] memory){
         bytes4 functionSelector = bytes4(_data[0]);
         uint256[] memory paramsTypes = abi.decode(_data[1], (uint256[]));
@@ -37,4 +37,5 @@ library DataDecoder {
         }
         return(functionSelector, params);
     }
+
 }
