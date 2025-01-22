@@ -10,9 +10,6 @@ library ParamManagerLib {
         uint256 x;
         int256 y;
         bool z;
-        bytes[] aV;
-        address[] aW;
-        uint256[] aX;
     }
 
 }

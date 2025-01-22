@@ -14,7 +14,7 @@ library DataDecoder {
         uint256[] memory paramsTypes = abi.decode(_data[1], (uint256[]));
         if(paramsTypes.length > 10) revert MaxParamsReached(paramsTypes.length);
         ParamManagerLib.DeFiParam[] memory params = new ParamManagerLib.DeFiParam[](paramsTypes.length);
-        uint256 offset = 0; // (FuncSelector == 4) +(ParamsTypesArray == 32) == 36
+        uint256 offset = 0; 
         for(uint256 i = 0; i < paramsTypes.length; i++){
             ParamManagerLib.DeFiParam memory param;
             if(paramsTypes[i] == 0){
@@ -29,6 +29,9 @@ library DataDecoder {
             } else if(paramsTypes[i] == 3){
                 param._type = 3;
                 param.z = abi.decode(_data[2][offset:offset+32], (bool));
+            } else if(paramsTypes[i] == 4){
+                param._type = 4;
+                param.v = abi.decode(_data[2][offset:offset+32], (bytes));
             } else {
                 revert InvalidParams("dataDecoder");
             }
