@@ -19,11 +19,13 @@ contract WalletContract {
     mapping(address => bool) public owners; 
 
     IFunctions public functions;
+    Roles public roles;
 
-    constructor(address _owner, address _secondOwner, address _funct) {
+    constructor(address _owner, address _secondOwner, address _funct, address _roles) {
         owners[_owner] = true;
         if(_secondOwner != address(0)) owners[_secondOwner] = true; 
         functions = IFunctions(_funct);
+        roles = Roles(_roles);
     }
 
     /** 
@@ -33,8 +35,9 @@ contract WalletContract {
     * @dev check if msg.sender in the MAIN.function is a allowed owner  
     */
     modifier accessControl(address _signer){
-        require(/*ONLYMAIN*/0==0);
-        require(owners[_signer], "onlyOwner control");
+        bool isProtocol = roles.isProtocolContract(_signer);
+        require(isProtocol, "access control: onlyProtocol");
+        require(owners[_signer], "access control: onlyOwner");
         _;
     }
 
