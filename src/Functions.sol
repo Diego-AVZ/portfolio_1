@@ -6,6 +6,7 @@ import {ISwapRouter} from "../lib/v3-periphery/contracts/interfaces/ISwapRouter.
 import {IUniswapV3PoolState} from "../lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol";
 import {PoolSearcher} from "./lib/UniswapPoolSearch.sol";
 import {UniswapUtils} from "./lib/UniswapUtils.sol";
+import {IERC20} from "../lib/openzeppelin/contracts/interfaces/IERC20.sol";
 
 contract Functions {
 
@@ -20,11 +21,12 @@ contract Functions {
             success = swap(p[0].w, p[1].w, p[2].x, p[3].x);
         } else if(f == 0x88bd413e){
             addLiquidity01(p[0].x, uint24(p[1].x), int24(p[2].y), int24(p[3].y), p[4].x, p[5].x);
-        }else if(f == 0x88bd413e){
-            success = uniswapSwap(p[0].w, p[1].w, p[2].w, p[3].x, p[4].x);
+        }else if(f == 0x469e635e){
+            success = uniswapSwap(p[0].w, p[1].w, msg.sender, p[2].x, p[3].x);
         } else {
             revert("Invalid function selector");
         }
+        return success;
     }
 
     function swap(
@@ -55,7 +57,7 @@ contract Functions {
             uint256 slippage
         ) internal returns(bool){
             address pool = PoolSearcher.searchPool(tokenIn, tokenOut, UNI_V3_FACTORY);
-            uint8 fee = UniswapUtils.getPoolFee(pool);
+            uint24 fee = UniswapUtils.getPoolFee(pool);
             address[] memory path = new address[](2);
             path[0] = tokenIn;
             path[1] = tokenOut;
@@ -73,8 +75,29 @@ contract Functions {
                     sqrtPriceLimitX96 : sqrtPriceLimitX96
                 }
             );
+            IERC20(tokenIn).transferFrom(recipient, address(this), amountIn);
             uint256 amountOut = ISwapRouter(SWAP_ROUTER).exactInputSingle(params);
             return(amountOut >= amountOutMin);
+    }
+
+    function approveRequired(bytes4 _funcSelector) external pure returns(bool isRequired, uint8 token, uint8 amount){
+        bytes4 f = _funcSelector;
+        if(f == 0xee5b3814){
+            //
+            isRequired = false;
+            token = 0;
+            amount = 0;
+        } else if(f == 0x88bd413e){
+            //
+        }else if(f == 0x469e635e){
+            //uniswapSwap();
+            isRequired = true;
+            token = 0;
+            amount = 3;
+        } else {
+            revert("Invalid function selector");
+        }
+        return(isRequired, token, amount);
     }
 
 }

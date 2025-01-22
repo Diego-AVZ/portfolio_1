@@ -5,6 +5,7 @@ import {UniswapV3Factory} from "../../lib/v3-core/contracts/UniswapV3Factory.sol
 import {IUniswapV3PoolState} from "../../lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol";
 
 library PoolSearcher {
+
  
     function searchPool(address tokenA, address tokenB, address _factory) internal view returns(address poolToSwap) {
         uint24[] memory fees = new uint24[](4);
@@ -18,7 +19,9 @@ library PoolSearcher {
         for(uint8 i = 0; i < 4; i++){
             address pool = checkPools(token0, token1, _factory, fees[i]);
             pools[i] = pool;
-            poolsCount = pool != address(0) ? poolsCount++ : poolsCount;
+            poolsCount = pool != address(0) 
+                ? poolsCount + 1 
+                : poolsCount;
         }
         poolToSwap =  searchBestPool(pools, poolsCount);
         return poolToSwap;
@@ -48,14 +51,12 @@ library PoolSearcher {
 
     function getLargerLiquidity(uint128[] memory li) internal pure returns(uint8){
         uint256 len = li.length;
-        uint8 largerLiq;
-        for(uint8 i = 0; i < len; i++){
-            if(i < len - 1){
-                largerLiq = li[i] > li[i+1] ? i : i+1;
-            } else {
-                largerLiq = li[i] > largerLiq ? i : largerLiq;
+        uint8 largerLiq = 0;
+        for(uint8 i = 1; i < len; i++){
+            if(li[i] > li[largerLiq]){
+                largerLiq = i;
             }
-        } 
+        }
         return largerLiq;
     }
  

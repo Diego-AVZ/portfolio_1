@@ -4,7 +4,8 @@ pragma solidity ^0.8.24;
 contract Roles {
 
     modifier onlyAdmins(){
-        require(isAdmin[msg.sender], "You Are not Admin, Only Admins can call this functions");
+        require(isAdmin[msg.sender], "Access denied: caller is not an admin");
+        require(AdminPenalities[msg.sender] == 0, "Access denied: admin is penalized");
         _;
     }
 
@@ -37,6 +38,11 @@ contract Roles {
                 }
             );
             protocolContracts[_newContractAddress] = _newContract;
+    }
+
+    function addAdmin(address newAdmin) public {
+        require(msg.sender == ADMIN1);
+        isAdmin[newAdmin] = true;
     }
 
     function isProtocolContract(address _addr) public view returns(bool){

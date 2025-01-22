@@ -29,4 +29,21 @@ contract MockFunctions {
             }
     }
 
+    function approveRequired(bytes4 _funcSelector) external pure returns(bool isRequired, uint8 token, uint8 amount){
+        bytes4 f = _funcSelector;
+        if(f == 0xee5b3814){
+            //
+        } else if(f == 0x88bd413e){
+            //
+        }else if(f == 0x469e635e){
+            //uniswapSwap();
+            isRequired = true;
+            token = 0;
+            amount = 3;
+        } else {
+            revert("Invalid function selector");
+        }
+        return(isRequired, token, amount);
+    }
+
 }

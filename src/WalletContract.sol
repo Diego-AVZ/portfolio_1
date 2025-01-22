@@ -82,26 +82,19 @@ contract WalletContract {
 
     function defiAction(bytes[] calldata _actionData, address _signer) public payable accessControl(_signer) returns(bool) {
         (bytes4 functionSelector, ParamManagerLib.DeFiParam[] memory params) = _actionData.dataDecoder();
+        (bool isRequired, uint8 token, uint8 amount) = functions.approveRequired(functionSelector);
+        if(isRequired){
+            approve(params[token].w, params[amount].x);
+        }
         bool success = functions.functionRouter{value : msg.value}(functionSelector, params);
         emit DeFiActionExecuted(functionSelector, params);
         return success;
     }
 
-
-    // INteract with anothe protocol
-    /*  
-        Protocol crea un CustomMain{} que llama a nuestro Main (a CustomMain le llamarán desde su front)
-        Protocol tiene su contract y su funcion a la que quiere llamar
-        1. buildHexData(); con funcitonSelector
-        2. Mi MAIN.mainDefiActionCustom(hexData) llama con hexData
-        3 en este contrato
-        function extraDefiActions(){
-            hace llamada .call con msg.data para que el fallback del contrato de Protocol lo detecte
-            * problema es que e fallback debe estar diseñada para pillar la data
-            * el protocol debera desplegar otro contrato con la interface a llamar y la address a llamar
-            * voy a crear un nuevo contrato a modo de SDK para que los protocols puedan usarlo y configurarlo facilmente
-        }
-    */
+    function approve(address _token, uint256 _amount) internal {
+        IERC20(_token).approve(address(functions), _amount);
+    }
+    
 
     function extraDefiActions(bytes[] calldata _data, address _signer, address _customizedContract) external payable accessControl(_signer){
         (bytes4 functionSelector, ParamManagerLib.DeFiParam[] memory params) = _data.dataDecoder();

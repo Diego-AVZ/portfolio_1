@@ -28,8 +28,6 @@ library UniswapUtils {
             return limitPrice;
     }
 
-    
-
     function getAmountOutMin(
             address _poolState,
             uint256 slippage,
@@ -47,8 +45,8 @@ library UniswapUtils {
             return amountOutMin;
     }
 
-    function getPoolFee(address _pool) external view returns(uint8 fee){
-        (,,,,,fee,) = IUniswapV3PoolState(_pool).slot0();
+    function getPoolFee(address _pool) external view returns(uint24 fee){
+        (fee) = IUniswapV3PoolState(_pool).fee();
         return fee;
     }
 
