@@ -35,8 +35,7 @@ library UniswapUtils {
             address[] calldata path
         ) public view returns(uint256 amountOutMin) {
             uint160 sqrtPrice = getCurrentSqrtPrice(_poolState);
-            uint256 price = (uint256(sqrtPrice) * uint256(sqrtPrice)) >> 96;
-            
+            uint256 price = (uint256(sqrtPrice) * uint256(sqrtPrice)) >> 96;      
             uint256 amountOut = path[0] > path[1] 
                 ? (amountIn * (1 << 96)) / price      // token1 -> token0
                 : (amountIn * price) >> 96;           // token0 -> token1

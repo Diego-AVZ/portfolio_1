@@ -3,9 +3,9 @@ pragma solidity ^0.8.24;
 
 import {UniswapV3Factory} from "../../lib/v3-core/contracts/UniswapV3Factory.sol";
 import {IUniswapV3PoolState} from "../../lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol";
+import {UniswapUtils} from "./UniswapUtils.sol";
 
 library PoolSearcher {
-
  
     function searchPool(address tokenA, address tokenB, address _factory) internal view returns(address poolToSwap) {
         uint24[] memory fees = new uint24[](4);
@@ -33,8 +33,8 @@ library PoolSearcher {
     }
 
     function orderTokens(address tokenA, address tokenB) internal pure returns(address token0, address token1){
-        (token0, token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
-        return(token0, token1);
+        address[] memory tokens = UniswapUtils.orderTokensInPool(tokenA, tokenB);
+        return(tokens[0], tokens[1]);
     }
 
     function searchBestPool(address[] memory _pools, uint8 _poolsCount) internal view returns(address) {

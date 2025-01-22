@@ -24,9 +24,14 @@ contract Test_PoolSearcher is Test{
         factory = new MockUniswapFactory(address(poolA), address(poolB), address(poolC));
     }
 
-    function test_checkPool() public {
+    function test_searchPool() public view {
         address bestPool = PoolSearcher.searchPool(WETH, AAVE, address(factory));
         assertEq(bestPool, address(poolB));
+    }
+
+    function test_searchPoolWithOrderTokens() public view {
+        address bestPool = PoolSearcher.searchPool(AAVE, WETH, address(factory)); // changing the order of the tokens 
+        assertEq(bestPool, address(poolB));                                       //   library should order them
     }
 
 }
