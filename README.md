@@ -42,6 +42,9 @@ The architecture follows this structure:
 |   |-- lib
 |   |   |-- Users.sol
 |   |   |-- Params.sol
+|   |   |-- Decoder.sol
+|   |   |-- UniswapPoolSearch.sol
+|   |   |-- UniswapUtils.sol
 |   |-- admins
 |   |   |-- Roles.sol
 |   |-- SDK
@@ -52,7 +55,8 @@ The architecture follows this structure:
 |   |-- MainDataStorage.sol
 |   |-- Factory.sol
 |   |-- Functions.sol
-|   |-- UserContractType1.sol
+|   |-- WalletContract.sol
+|   |-- MainProtocol.sol
 
 ```
 
