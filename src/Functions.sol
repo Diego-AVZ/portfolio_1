@@ -5,6 +5,7 @@ import {ParamManagerLib} from "./lib/Params.sol";
 import {ISwapRouter} from "../lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import {IUniswapV3PoolState} from "../lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol";
 import {PoolSearcher} from "./lib/UniswapPoolSearch.sol";
+import {WalletContract} from "./WalletContract.sol";
 import {UniswapUtils} from "./lib/UniswapUtils.sol";
 import {IERC20} from "../lib/openzeppelin/contracts/interfaces/IERC20.sol";
 
@@ -52,10 +53,11 @@ contract Functions {
     function uniswapSwap(
             address tokenIn,
             address tokenOut,
-            address recipient,
+            address sender,
             uint256 amountIn,
             uint256 slippage
-        ) internal returns(bool){
+        ) public payable returns(bool){
+            require(msg.sender == address(this), "Access control");
             address pool = PoolSearcher.searchPool(tokenIn, tokenOut, UNI_V3_FACTORY);
             uint24 fee = UniswapUtils.getPoolFee(pool);
             address[] memory path = new address[](2);
@@ -68,15 +70,16 @@ contract Functions {
                     tokenIn : tokenIn,
                     tokenOut : tokenOut,
                     fee : fee,
-                    recipient : recipient,
+                    recipient : address(this),
                     deadline : block.timestamp + 350,
                     amountIn : amountIn,
                     amountOutMinimum : amountOutMin,
                     sqrtPriceLimitX96 : sqrtPriceLimitX96
                 }
             );
-            IERC20(tokenIn).transferFrom(recipient, address(this), amountIn);
+            IERC20(tokenIn).transferFrom(sender, address(this), amountIn);
             uint256 amountOut = ISwapRouter(SWAP_ROUTER).exactInputSingle(params);
+            WalletContract(payable(sender)).depositFunds{ value : msg.value }(tokenOut, amountOut);
             return(amountOut >= amountOutMin);
     }
 

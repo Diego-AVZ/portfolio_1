@@ -53,7 +53,7 @@ contract WalletContract {
       ////////////////////////////////////////////
      ////////////////  MAPPINGS  ////////////////
     ////////////////////////////////////////////
-    mapping(address => uint256) internal portfolio;
+    mapping(address => bool) internal isHolded;
 
     receive() external payable{
         require(msg.value > 0, "Send more Ether");
@@ -71,7 +71,7 @@ contract WalletContract {
         } else {
             value = _value;
             IERC20(_token).transferFrom(msg.sender, address(this), _value);
-            portfolio[_token] += _value;
+            isHolded[_token] = true;
         }
         emit ContractFunded(_token, value);
     }
