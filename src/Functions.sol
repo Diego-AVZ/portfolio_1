@@ -52,16 +52,6 @@ contract Functions {
         /*executor.addLiquidity01();*/
     }
 
-    function supplyAave(
-            address _asset,
-            uint256 amount,
-            address sender
-        ) public returns(bool){
-            IERC20(_asset).transferFrom(sender, address(this), amount);
-            IPool(AAVE_POOL).supply(_asset, amount, sender, 0);
-            return true;
-    }
-
     function uniswapSwap(
             address tokenIn,
             address tokenOut,
@@ -93,6 +83,21 @@ contract Functions {
             uint256 amountOut = ISwapRouter(SWAP_ROUTER).exactInputSingle(params);
             WalletContract(payable(sender)).depositFunds{ value : 0 }(tokenOut, amountOut);
             return(amountOut >= amountOutMin);
+    }
+
+    function supplyAave(
+            address _asset,
+            uint256 amount,
+            address sender
+        ) public returns(bool){
+            IERC20(_asset).transferFrom(sender, address(this), amount);
+            IPool(AAVE_POOL).supply(_asset, amount, sender, 0);
+            return true;
+    }
+
+    function borrowAave(address asset, uint256 amount, address sender) public returns(bool) {
+        IPool(AAVE_POOL).borrow(asset, amount, 2, 0, sender);
+        return true;
     }
 
     function approveRequired(bytes4 _funcSelector) external pure returns(bool isRequired, uint8 token, uint8 amount){
