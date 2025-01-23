@@ -11,6 +11,8 @@ contract MockDataStorage {
 
     mapping(address => UsersLib.User) internal clients;
 
+    address public functions;
+
     function createUser(
             address _newUser,
             address _newContract,
@@ -31,5 +33,12 @@ contract MockDataStorage {
 
     function getUserData(address account) external view returns(UsersLib.User memory){
         return(clients[account]);
+    }
+
+    function getContracts() public view returns(address, address){
+        return(
+            functions,
+            address(0x123)
+        );
     }
 }

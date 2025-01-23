@@ -81,4 +81,17 @@ contract MainDataStorage {
         return(clients[account]);
     }
 
+    address public functions;
+
+    function setFunctions(address _newFunctions) public onlyAdmins{
+        functions = _newFunctions;
+    }
+
+    function getContracts() public view returns(address, address){
+        return(
+            functions,
+            address(roles)
+        );
+    }
+
 }

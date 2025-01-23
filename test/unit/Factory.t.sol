@@ -16,7 +16,7 @@ contract test_Factory is Test {
     }
 
     function test_deployNewContract() public {
-        factory.deployNewContract(address(0x123), address(0x456));
+        factory.deployNewContract(address(0x123));
         address userContract = data.getUserData(address(0x123)).contractAddress;
         assert(userContract != address(0));
     }

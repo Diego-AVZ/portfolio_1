@@ -13,12 +13,14 @@ contract test_WalletContract is Test {
     WalletContract public walletContract;
     TestToken public testToken;
     MockFunctions public mockFunctions;
+    MockRoles public mockRoles;
 
     address public constant USER1 = address(0x12345);
 
     function setUp() public {
         mockFunctions = new MockFunctions();
-        walletContract = new WalletContract(USER1,address(0),address(mockFunctions));
+        mockRoles = new MockRoles();
+        walletContract = new WalletContract(USER1,address(0),address(mockFunctions), address(mockRoles));
         testToken = new TestToken(USER1);
     }
 
