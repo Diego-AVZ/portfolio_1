@@ -16,7 +16,7 @@ contract MainDataStorageTest is Test {
 
     function setUp() public {
         roles = new MockRoles();
-        data = new MainDataStorage(address(roles));
+        data = new MainDataStorage(address(roles), address(0x01), address(0x02));
     }
 
     function test_createUser() public {

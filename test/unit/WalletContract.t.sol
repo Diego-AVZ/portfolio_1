@@ -4,6 +4,7 @@ pragma solidity ^0.8.24;
 import {Test, console} from "forge-std/Test.sol";
 import {MockRoles} from "../mock/MockRoles.sol";
 import {TestToken} from "../mock/MockERC20.sol";
+import {TestWEth} from "../mock/MockWEth.sol";
 import {MockFunctions} from "../mock/MockFunctions.sol";
 import {WalletContract} from "../../src/WalletContract.sol";
 import {IERC20} from "../../lib/openzeppelin/contracts/interfaces/IERC20.sol";
@@ -12,6 +13,7 @@ contract test_WalletContract is Test {
 
     WalletContract public walletContract;
     TestToken public testToken;
+    TestWEth public testWEth;
     MockFunctions public mockFunctions;
     MockRoles public mockRoles;
 
@@ -20,7 +22,8 @@ contract test_WalletContract is Test {
     function setUp() public {
         mockFunctions = new MockFunctions();
         mockRoles = new MockRoles();
-        walletContract = new WalletContract(USER1,address(0),address(mockFunctions), address(mockRoles));
+        testWEth = new TestWEth();
+        walletContract = new WalletContract(USER1,address(0),address(mockFunctions), address(mockRoles), address(testWEth));
         testToken = new TestToken(USER1);
     }
 
@@ -35,8 +38,8 @@ contract test_WalletContract is Test {
         //vm.deal(USER1, 10 ether);
         //assertEq(USER1.balance, 10 ether);
         walletContract.depositFunds{value : 3 ether}(address(0), 3 ether);
-        uint256 balance = walletContract.getContractEtherBalance();
-        assertEq(balance, 3 ether);
+        uint256 balance = testWEth.balanceOf(address(walletContract));
+        assertEq(balance, 3*1e18);
     }
 
     function test_depositFunds_erc20() public{

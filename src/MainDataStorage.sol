@@ -12,8 +12,13 @@ contract MainDataStorage {
 
     Roles public roles;
 
-    constructor(address _roles) {
+    address public functions;
+    address public wEth;
+
+    constructor(address _roles, address _functions, address _wEth) {
         roles = Roles(_roles);
+        functions = _functions;
+        wEth = _wEth;
     }
 
     /**
@@ -81,16 +86,16 @@ contract MainDataStorage {
         return(clients[account]);
     }
 
-    address public functions;
 
     function setFunctions(address _newFunctions) public onlyAdmins{
         functions = _newFunctions;
     }
 
-    function getContracts() public view returns(address, address){
+    function getContracts() public view returns(address, address, address){
         return(
             functions,
-            address(roles)
+            address(roles),
+            wEth
         );
     }
 

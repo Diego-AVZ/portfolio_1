@@ -12,13 +12,13 @@ contract Factory {
 
     constructor(address _data){
         data = MainDataStorage(_data);
-        (,address _roles) = data.getContracts();
+        (,address _roles,) = data.getContracts();
         roles = Roles(_roles);
     }
     
     function deployNewContract(address _newUser) public {
-        (address functions,) = data.getContracts();
-        WalletContract _newContract = new WalletContract(_newUser, address(0), functions, address(roles));
+        (address functions, , address wEth) = data.getContracts();
+        WalletContract _newContract = new WalletContract(_newUser, address(0), functions, address(roles), wEth);
         data.createUser(_newUser, address(_newContract), 1);
     }
     

@@ -6,6 +6,7 @@ import {ParamManagerLib} from "./lib/Params.sol";
 import {DataDecoder} from "./lib/Decoder.sol";
 import {IFunctions} from "./interfaces/IFunctions.sol";
 import {IERC20} from "../lib/openzeppelin/contracts/interfaces/IERC20.sol";
+import {IWETH} from "../lib/weth/IWETH.sol";
 
 /**
 * @author AVZ.Tech
@@ -20,12 +21,14 @@ contract WalletContract {
 
     IFunctions public functions;
     Roles public roles;
+    address public wEth;
 
-    constructor(address _owner, address _secondOwner, address _funct, address _roles) {
+    constructor(address _owner, address _secondOwner, address _funct, address _roles, address _wEth) {
         owners[_owner] = true;
         if(_secondOwner != address(0)) owners[_secondOwner] = true; 
         functions = IFunctions(_funct);
         roles = Roles(_roles);
+        wEth = _wEth;
     }
 
     /** 
@@ -71,6 +74,8 @@ contract WalletContract {
         uint256 value;
         if(_token == address(0)){
             value = msg.value;
+            IWETH(wEth).deposit{value : msg.value}();
+            isHolded[wEth] = true;
         } else {
             value = _value;
             IERC20(_token).transferFrom(msg.sender, address(this), _value);

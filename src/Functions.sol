@@ -8,11 +8,13 @@ import {PoolSearcher} from "./lib/UniswapPoolSearch.sol";
 import {WalletContract} from "./WalletContract.sol";
 import {UniswapUtils} from "./lib/UniswapUtils.sol";
 import {IERC20} from "../lib/openzeppelin/contracts/interfaces/IERC20.sol";
+import {IPool} from "../lib/aave/contracts/interfaces/IPool.sol";
 
 contract Functions {
 
     address public constant SWAP_ROUTER = address(0x123); // INITIALIZE with UNISWAP Router address
     address public constant UNI_V3_FACTORY = 0x1F98431c8aD98523631AE4a59f267346ea31F984;
+    address public constant AAVE_POOL = 0x794a61358D6845594F94dc1DB02A252b5b4814aD;
 
     function functionRouter(bytes4 _funcSelector, ParamManagerLib.DeFiParam[] memory _params) external payable returns(bool){
         bytes4 f = _funcSelector;
@@ -50,13 +52,23 @@ contract Functions {
         /*executor.addLiquidity01();*/
     }
 
+    function supplyAave(
+            address _asset,
+            uint256 amount,
+            address sender
+        ) public returns(bool){
+            IERC20(_asset).transferFrom(sender, address(this), amount);
+            IPool(AAVE_POOL).supply(_asset, amount, sender, 0);
+            return true;
+    }
+
     function uniswapSwap(
             address tokenIn,
             address tokenOut,
             address sender,
             uint256 amountIn,
             uint256 slippage
-        ) public payable returns(bool){
+        ) public returns(bool){
             require(msg.sender == address(this), "Access control");
             address pool = PoolSearcher.searchPool(tokenIn, tokenOut, UNI_V3_FACTORY);
             uint24 fee = UniswapUtils.getPoolFee(pool);
@@ -79,7 +91,7 @@ contract Functions {
             );
             IERC20(tokenIn).transferFrom(sender, address(this), amountIn);
             uint256 amountOut = ISwapRouter(SWAP_ROUTER).exactInputSingle(params);
-            WalletContract(payable(sender)).depositFunds{ value : msg.value }(tokenOut, amountOut);
+            WalletContract(payable(sender)).depositFunds{ value : 0 }(tokenOut, amountOut);
             return(amountOut >= amountOutMin);
     }
 
