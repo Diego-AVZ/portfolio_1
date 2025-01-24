@@ -1,0 +1,132 @@
+{
+	"compiler": {
+		"version": "0.8.24+commit.e11b9ed9"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "functionName",
+						"type": "string"
+					}
+				],
+				"name": "InvalidParams",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "totalParms",
+						"type": "uint256"
+					}
+				],
+				"name": "MaxParamsReached",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes[]",
+						"name": "_data",
+						"type": "bytes[]"
+					}
+				],
+				"name": "dataDecoder",
+				"outputs": [
+					{
+						"internalType": "bytes4",
+						"name": "",
+						"type": "bytes4"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint8",
+								"name": "_type",
+								"type": "uint8"
+							},
+							{
+								"internalType": "bytes",
+								"name": "v",
+								"type": "bytes"
+							},
+							{
+								"internalType": "address",
+								"name": "w",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "x",
+								"type": "uint256"
+							},
+							{
+								"internalType": "int256",
+								"name": "y",
+								"type": "int256"
+							},
+							{
+								"internalType": "bool",
+								"name": "z",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct ParamManagerLib.DeFiParam[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"src/lib/Decoder.sol": "DataDecoder"
+		},
+		"evmVersion": "berlin",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"src/lib/Decoder.sol": {
+			"keccak256": "0xff575280563dd8d3716f0532eaf69de1939fd65e4245d82708fefbc9c303d953",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://28d14707ee450905d007a151a78874f681669def71995e64ff8fdc15109f7047",
+				"dweb:/ipfs/Qme8MKcfGaMwhqoHW3Uo5uEBaFBSWdLBeVisiY993faSKP"
+			]
+		},
+		"src/lib/Params.sol": {
+			"keccak256": "0xfcbd9c458536ab3aa6eb1ffe46ced7891d0bc5ad7eef0beeb9a26cec40d41ddf",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0a8401a5a8ce10b9eee553ce7cfe05d0dc454e43236171b69b713666739edd7c",
+				"dweb:/ipfs/QmcKiTZfzd7gGf7At959cpCH34fjcuyq6p8GYRG8D79Ugz"
+			]
+		}
+	},
+	"version": 1
+}

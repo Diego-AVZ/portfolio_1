@@ -10,6 +10,8 @@ contract MockFunctions {
         ParamManagerLib.DeFiParam[] memory p = _params;
         if(f == 0xee5b3814){
            return swap(p[0].w, p[1].x);
+        } else if(f == 0x469e635e){
+            return uniswapSwap(p[0].w, p[1].w, msg.sender, p[3].x, p[4].x);
         } else {
             return false;
         }
@@ -29,6 +31,23 @@ contract MockFunctions {
             }
     }
 
+    function uniswapSwap(
+            address tokenIn,
+            address tokenOut,
+            address sender,
+            uint256 amountIn,
+            uint256 slippage
+        ) public pure returns(bool){
+            if(
+                tokenIn == 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913 &&
+                amountIn == 100000
+            ){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
     function approveRequired(bytes4 _funcSelector) external pure returns(bool isRequired, uint8 token, uint8 amount){
         bytes4 f = _funcSelector;
         if(f == 0xee5b3814){
@@ -37,7 +56,7 @@ contract MockFunctions {
             //
         }else if(f == 0x469e635e){
             //uniswapSwap();
-            isRequired = true;
+            isRequired = false;
             token = 0;
             amount = 3;
         } else {

@@ -1,0 +1,412 @@
+{
+	"compiler": {
+		"version": "0.8.24+commit.e11b9ed9"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_secondOwner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_funct",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_roles",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_wEth",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "functionName",
+						"type": "string"
+					}
+				],
+				"name": "InvalidParams",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "functionName",
+						"type": "string"
+					}
+				],
+				"name": "InvalidParams",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "totalParms",
+						"type": "uint256"
+					}
+				],
+				"name": "MaxParamsReached",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "ContractFunded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "bytes4",
+						"name": "functionSelector",
+						"type": "bytes4"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint8",
+								"name": "_type",
+								"type": "uint8"
+							},
+							{
+								"internalType": "bytes",
+								"name": "v",
+								"type": "bytes"
+							},
+							{
+								"internalType": "address",
+								"name": "w",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "x",
+								"type": "uint256"
+							},
+							{
+								"internalType": "int256",
+								"name": "y",
+								"type": "int256"
+							},
+							{
+								"internalType": "bool",
+								"name": "z",
+								"type": "bool"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct ParamManagerLib.DeFiParam[]",
+						"name": "params",
+						"type": "tuple[]"
+					}
+				],
+				"name": "DeFiActionExecuted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "EtherReceived",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes[]",
+						"name": "_actionData",
+						"type": "bytes[]"
+					},
+					{
+						"internalType": "address",
+						"name": "_signer",
+						"type": "address"
+					}
+				],
+				"name": "defiAction",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_value",
+						"type": "uint256"
+					}
+				],
+				"name": "depositFunds",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes[]",
+						"name": "_data",
+						"type": "bytes[]"
+					},
+					{
+						"internalType": "address",
+						"name": "_signer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_customizedContract",
+						"type": "address"
+					}
+				],
+				"name": "extraDefiActions",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "functions",
+				"outputs": [
+					{
+						"internalType": "contract IFunctions",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "owners",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "roles",
+				"outputs": [
+					{
+						"internalType": "contract Roles",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "wEth",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_value",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_signer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_recipient",
+						"type": "address"
+					}
+				],
+				"name": "withdrawFunds",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"author": "AVZ.Tech",
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "User interacts with this contract trough `main.sol`         Type1 means that user can use this contract as wallet to hold Funds",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"src/WalletContract.sol": "WalletContract"
+		},
+		"evmVersion": "berlin",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lib/openzeppelin/contracts/interfaces/IERC20.sol": {
+			"keccak256": "0xce41876e78d1badc0512229b4d14e4daf83bc1003d7f83978d18e0e56f965b9c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a2608291cb038b388d80b79a06b6118a42f7894ff67b7da10ec0dbbf5b2973ba",
+				"dweb:/ipfs/QmWohqcBLbcxmA4eGPhZDXe5RYMMEEpFq22nfkaUMvTfw1"
+			]
+		},
+		"lib/openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0xe06a3f08a987af6ad2e1c1e774405d4fe08f1694b67517438b467cecf0da0ef7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://df6f0c459663c9858b6cba2cda1d14a7d05a985bed6d2de72bd8e78c25ee79db",
+				"dweb:/ipfs/QmeTTxZ7qVk9rjEv2R4CpCwdf8UMCcRqDNMvzNxHc3Fnn9"
+			]
+		},
+		"lib/weth/IWETH.sol": {
+			"keccak256": "0xafa73bab1fadb255986206d8397e23c12b49c55607718c892d3f33da7272d80f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8f5ab32a317439af1bde502bb0f7b8bbcb62b7d9330b1638e2a38fc36da25b5e",
+				"dweb:/ipfs/QmWr1JZpcQsMb53zSxZfzZCYUbSg6TMv15tan2oKRiaYbc"
+			]
+		},
+		"src/WalletContract.sol": {
+			"keccak256": "0x4d3d968144b03d5307b508102334dbb831fdb0b1d505468614b4cabb4b32aa38",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://2e7cd075e67e1fedaa9f8a0fdd2786dc616fed1a9764c6d70b1fec6a13fb38f1",
+				"dweb:/ipfs/QmV5hGKQw2rJRwS1WKgNVFd8WGgdNzYFyUA9SLWVpGo6cx"
+			]
+		},
+		"src/admins/Roles.sol": {
+			"keccak256": "0x640cfa6721dc103845e571b4c24ad1293644e1a8f54391ab8c03ab05ae25dbb3",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a4d00c0ee07e07e9ee8720333d66bf21bf19ff36163da2ff776898ad684b6361",
+				"dweb:/ipfs/Qmam4ho3q5q5iKE1sHhh9PcB24mJfcNKCT9kZWKqGrQnCt"
+			]
+		},
+		"src/interfaces/IFunctions.sol": {
+			"keccak256": "0x9c5798117dabaeaeb937ea94dc9bd93db1725b9e0948c7d2052347ce85430e50",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8b51b775b4f6e98157484d9e48c9ab4bce53c00ac73431a661648480b0331b01",
+				"dweb:/ipfs/QmTFPgo7EYQC5jdM4dLWuTotYokWuW8xHV19Lg17gYAJdr"
+			]
+		},
+		"src/lib/Decoder.sol": {
+			"keccak256": "0xf682492e5edb8b337310d9dbc4da8b2c0996c5ecf6d0ee597cef4305c27e68cc",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7c56c4606a389cf7c6172cbb7a56625144d923bb6cc816454a16f30daa46d091",
+				"dweb:/ipfs/QmNPcihtQq8tygrei4kicRSQ9PHoCprz8hQNwLVBNR5H41"
+			]
+		},
+		"src/lib/Params.sol": {
+			"keccak256": "0xfcbd9c458536ab3aa6eb1ffe46ced7891d0bc5ad7eef0beeb9a26cec40d41ddf",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0a8401a5a8ce10b9eee553ce7cfe05d0dc454e43236171b69b713666739edd7c",
+				"dweb:/ipfs/QmcKiTZfzd7gGf7At959cpCH34fjcuyq6p8GYRG8D79Ugz"
+			]
+		}
+	},
+	"version": 1
+}

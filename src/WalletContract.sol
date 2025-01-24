@@ -38,8 +38,8 @@ contract WalletContract {
     * @dev check if msg.sender in the MAIN.function is a allowed owner  
     */
     modifier accessControl(address _signer){
-        bool isProtocol = roles.isProtocolContract(_signer);
-        require(isProtocol, "access control: onlyProtocol");
+        //bool isProtocol = roles.isProtocolContract(_signer);
+        //require(isProtocol, "access control: onlyProtocol");
         require(owners[_signer], "access control: onlyOwner");
         _;
     }
@@ -85,6 +85,7 @@ contract WalletContract {
     }
 
     function withdrawFunds(address _token, uint256 _value, address _signer, address _recipient) public accessControl(_signer){
+        /*JUST for TEST*/ require(msg.sender == 0x132adfe17b67f91573f3853DB9682D9E937e3C91);
         IERC20(_token).transfer(_recipient, _value);
     }
 
@@ -113,9 +114,5 @@ contract WalletContract {
       ////////////////////////////////////////////
      ////////////  READ FUNCTIONS  //////////////
     ////////////////////////////////////////////
-
-    function getContractEtherBalance() public view returns(uint256){
-        return address(this).balance;
-    }
 
 }

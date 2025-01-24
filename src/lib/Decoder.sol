@@ -9,7 +9,7 @@ library DataDecoder {
     error InvalidParams(string functionName);
     /** 
     */
-    function dataDecoder(bytes[] calldata _data) internal pure returns(bytes4, ParamManagerLib.DeFiParam[] memory){
+    function dataDecoder(bytes[] calldata _data) external pure returns(bytes4, ParamManagerLib.DeFiParam[] memory){
         bytes4 functionSelector = bytes4(_data[0]);
         uint256[] memory paramsTypes = abi.decode(_data[1], (uint256[]));
         if(paramsTypes.length > 10) revert MaxParamsReached(paramsTypes.length);

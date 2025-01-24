@@ -2,8 +2,8 @@
 pragma solidity ^0.8.24;
 
 import {ParamManagerLib} from "./lib/Params.sol";
-import {ISwapRouter} from "../lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
-import {IUniswapV3PoolState} from "../lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol";
+import {ISwapRouter02} from "../lib/v3-periphery/contracts/interfaces/ISwapRouter02.sol";
+import {IV3SwapRouter} from "../lib/v3-periphery/contracts/interfaces/IV3SwapRouter.sol";import {IUniswapV3PoolState} from "../lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol";
 import {PoolSearcher} from "./lib/UniswapPoolSearch.sol";
 import {WalletContract} from "./WalletContract.sol";
 import {UniswapUtils} from "./lib/UniswapUtils.sol";
@@ -12,10 +12,21 @@ import {IPool} from "../lib/aave/contracts/interfaces/IPool.sol";
 
 contract Functions {
 
-    address public constant SWAP_ROUTER = address(0x123); // INITIALIZE with UNISWAP Router address
+    /** ARBITRUM
+    address public constant SWAP_ROUTER = 0xE592427A0AEce92De3Edee1F18E0157C05861564;
     address public constant UNI_V3_FACTORY = 0x1F98431c8aD98523631AE4a59f267346ea31F984;
     address public constant AAVE_POOL = 0x794a61358D6845594F94dc1DB02A252b5b4814aD;
-
+    */
+    /**BASE*/ 
+    address public constant SWAP_ROUTER = 0x2626664c2603336E57B271c5C0b26F421741e481;
+    address public constant UNI_V3_FACTORY = 0x33128a8fC17869897dcE68Ed026d694621f6FDfD;
+    address public constant AAVE_POOL = 0xA238Dd80C259a72e81d7e4664a9801593F98d1c5;
+     
+    /**ETH_SEPOLIA
+    address public constant SWAP_ROUTER = 0x6b2937Bde17889EDCf8fbD8dE31C3C2a70Bc4d65;
+    address public constant UNI_V3_FACTORY = 0x248AB79Bbb9bC29bB72f7Cd42F17e054Fc40188e;
+    address public constant AAVE_POOL = 0xA238Dd80C259a72e81d7e4664a9801593F98d1c5;
+    */
     function functionRouter(bytes4 _funcSelector, ParamManagerLib.DeFiParam[] memory _params) external payable returns(bool){
         bytes4 f = _funcSelector;
         ParamManagerLib.DeFiParam[] memory p = _params;
@@ -25,7 +36,7 @@ contract Functions {
         } else if(f == 0x88bd413e){
             addLiquidity01(p[0].x, uint24(p[1].x), int24(p[2].y), int24(p[3].y), p[4].x, p[5].x);
         }else if(f == 0x469e635e){
-            success = uniswapSwap(p[0].w, p[1].w, msg.sender, p[2].x, p[3].x);
+            success = uniswapSwap(p[0].w, p[1].w, msg.sender, p[3].x, p[4].x);
         } else {
             revert("Invalid function selector");
         }
@@ -59,7 +70,7 @@ contract Functions {
             uint256 amountIn,
             uint256 slippage
         ) public returns(bool){
-            require(msg.sender == address(this), "Access control");
+            //require(msg.sender == address(this), "Access control");
             address pool = PoolSearcher.searchPool(tokenIn, tokenOut, UNI_V3_FACTORY);
             uint24 fee = UniswapUtils.getPoolFee(pool);
             address[] memory path = new address[](2);
@@ -67,21 +78,23 @@ contract Functions {
             path[1] = tokenOut;
             uint256 amountOutMin = UniswapUtils.getAmountOutMin(pool, slippage, amountIn, path);
             uint160 sqrtPriceLimitX96 = UniswapUtils.getLimitSqrtPrice(pool, slippage, path);
-            ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams(
+            IV3SwapRouter.ExactInputSingleParams memory params = IV3SwapRouter.ExactInputSingleParams(
                 {
                     tokenIn : tokenIn,
                     tokenOut : tokenOut,
                     fee : fee,
                     recipient : address(this),
-                    deadline : block.timestamp + 350,
                     amountIn : amountIn,
                     amountOutMinimum : amountOutMin,
                     sqrtPriceLimitX96 : sqrtPriceLimitX96
                 }
             );
             IERC20(tokenIn).transferFrom(sender, address(this), amountIn);
-            uint256 amountOut = ISwapRouter(SWAP_ROUTER).exactInputSingle(params);
-            WalletContract(payable(sender)).depositFunds{ value : 0 }(tokenOut, amountOut);
+            IERC20(tokenIn).approve(SWAP_ROUTER,amountIn);
+            uint256 amountOut = ISwapRouter02(SWAP_ROUTER).exactInputSingle(params);
+            /* RETURN FUNDS TO WALLET_CONTRACT
+                WalletContract(payable(sender)).depositFunds{ value : 0 }(tokenOut, amountOut);
+            */
             return(amountOut >= amountOutMin);
     }
 

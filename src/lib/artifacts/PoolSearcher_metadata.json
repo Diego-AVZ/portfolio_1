@@ -1,0 +1,205 @@
+{
+	"compiler": {
+		"version": "0.8.24+commit.e11b9ed9"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "token0",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "token1",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_factory",
+						"type": "address"
+					},
+					{
+						"internalType": "uint24",
+						"name": "_fee",
+						"type": "uint24"
+					}
+				],
+				"name": "checkPools",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "pool",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint128[]",
+						"name": "li",
+						"type": "uint128[]"
+					}
+				],
+				"name": "getLargerLiquidity",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "tokenA",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "tokenB",
+						"type": "address"
+					}
+				],
+				"name": "orderTokens",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "token0",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "token1",
+						"type": "address"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address[]",
+						"name": "_pools",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint8",
+						"name": "_poolsCount",
+						"type": "uint8"
+					}
+				],
+				"name": "searchBestPool",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "tokenA",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "tokenB",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_factory",
+						"type": "address"
+					}
+				],
+				"name": "searchPool",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "poolToSwap",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"src/lib/UniswapPoolSearch.sol": "PoolSearcher"
+		},
+		"evmVersion": "berlin",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lib/v3-core/contracts/UniswapV3Factory.sol": {
+			"keccak256": "0x6a7dc1880fcc6d8a241d65e49db676c3678107020cf840231df4f1d4a1f45005",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://2d9ea0464da2268e22b0531483bf7c9f0a30c846ace68abcbce9db76590a65e5",
+				"dweb:/ipfs/QmRKB5yvDH3irjhjSPDreHCs9qKEgJEySJYUvwzyTWyEku"
+			]
+		},
+		"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol": {
+			"keccak256": "0x2ec7e87674f4814eb62ce4046cbddb81aaae0e069390c5ee4c16b5d74988c26a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://21b651c2d92c362bcd451d0d2a0fe6963b42ae4a7582b59f229a99fa42979db3",
+				"dweb:/ipfs/QmYDDcDjZwowP75gaSJrhfSUbmA4irvBZSBqf82wKhZRg3"
+			]
+		},
+		"src/lib/UniswapPoolSearch.sol": {
+			"keccak256": "0xa5054cfd9b2088370edb2cf57be8a756c05f172fb37127d2400da6832553c7c4",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c1eebc5617cd67c4b7d24d10d6dbdad782965564911632a5fbaa0b731e058ea5",
+				"dweb:/ipfs/QmNVXuhNXxQBjzwXeVyWFCNA2sgsp4YA9pqEsgMUPqPf9L"
+			]
+		},
+		"src/lib/UniswapUtils.sol": {
+			"keccak256": "0xb0a37feaeca3d4817708dbe16bcfa7379298dc4be81e5ca10f7acdd0956c8562",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://2bdb18bfd677b961ea70e6736ce6b18d42b1abc968e7b5712ba5f67c21770026",
+				"dweb:/ipfs/QmUKxEeVAaoXK17kS1qY1J4GoRhNtFpP55bkXZf3uSeNno"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,262 @@
+{
+	"compiler": {
+		"version": "0.8.24+commit.e11b9ed9"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_roles",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_functions",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_wEth",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "contractAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					}
+				],
+				"name": "UserAccountExist",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "contractAddress",
+						"type": "address"
+					}
+				],
+				"name": "UserCreated",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_newUser",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_newContract",
+						"type": "address"
+					},
+					{
+						"internalType": "uint8",
+						"name": "_contractType",
+						"type": "uint8"
+					}
+				],
+				"name": "createUser",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "functions",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getContracts",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "getUserData",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "contractAddress",
+								"type": "address"
+							},
+							{
+								"internalType": "uint8",
+								"name": "contractType",
+								"type": "uint8"
+							}
+						],
+						"internalType": "struct UsersLib.User",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "roles",
+				"outputs": [
+					{
+						"internalType": "contract Roles",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_newFunctions",
+						"type": "address"
+					}
+				],
+				"name": "setFunctions",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "wEth",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"author": "AVZ.Tech",
+			"kind": "dev",
+			"methods": {
+				"createUser(address,address,uint8)": {
+					"details": "This function is restricted to Protocol addresses through the       `onlyProtocol` modifier. It checks if the user already exists       and initializes their data using the `UsersLib.User` structure.",
+					"params": {
+						"_contractType": "Specifies the type of contract:       1 for walletContracts and 2 for onlyExecutionContracts.",
+						"_newContract": "The address of the contract created by the user.",
+						"_newUser": "The address of the new user to register."
+					}
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"createUser(address,address,uint8)": {
+					"notice": "Creates and associates a new user with their contract and data."
+				}
+			},
+			"notice": "Stores te most important DATA",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"src/MainDataStorage.sol": "MainDataStorage"
+		},
+		"evmVersion": "berlin",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"src/MainDataStorage.sol": {
+			"keccak256": "0xa4ef48831438e8d16845b7e5ce416c27afd1c2933f7ccdc9f0b7afa113398016",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e4bf88cd2dea140b86a3be259e201c26c36548d59a15040f82f9d3a30812dc40",
+				"dweb:/ipfs/QmXfRJd9hz48Q6A5zxjULVKZnaJFeti15RduMVTGdWUycL"
+			]
+		},
+		"src/admins/Roles.sol": {
+			"keccak256": "0x640cfa6721dc103845e571b4c24ad1293644e1a8f54391ab8c03ab05ae25dbb3",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a4d00c0ee07e07e9ee8720333d66bf21bf19ff36163da2ff776898ad684b6361",
+				"dweb:/ipfs/Qmam4ho3q5q5iKE1sHhh9PcB24mJfcNKCT9kZWKqGrQnCt"
+			]
+		},
+		"src/lib/Users.sol": {
+			"keccak256": "0xcb0da91395df1c91b570e0625e3871e490d1389b692989d89d70f87519627c98",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f35c0bed19db89307b56af7703862c97671dca8cd0e561eed86c48105f06fd62",
+				"dweb:/ipfs/QmY3cWnJyuAahUgBXDXRcrgb44NqaYnjwZF5pppH8SL14d"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,229 @@
+{
+  "name": "Functions",
+  "address": "0x27afb627c2524022adf774174a32d122544a5e65",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "asset",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "borrowAave",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "_funcSelector",
+          "type": "bytes4"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint8",
+              "name": "_type",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes",
+              "name": "v",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "w",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "x",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "y",
+              "type": "int256"
+            },
+            {
+              "internalType": "bool",
+              "name": "z",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct ParamManagerLib.DeFiParam[]",
+          "name": "_params",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "functionRouter",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "supplyAave",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "tokenIn",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "tokenOut",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amountIn",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "slippage",
+          "type": "uint256"
+        }
+      ],
+      "name": "uniswapSwap",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "AAVE_POOL",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "_funcSelector",
+          "type": "bytes4"
+        }
+      ],
+      "name": "approveRequired",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "isRequired",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint8",
+          "name": "token",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "amount",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "SWAP_ROUTER",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "UNI_V3_FACTORY",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "filePath": " - connect to localhost - /src/Functions.sol",
+  "pinnedAt": 1737722757470
+}

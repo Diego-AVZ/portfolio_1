@@ -77,5 +77,31 @@ contract test_WalletContract is Test {
         assert(success);
     }
 
+    function test_defiActions2() public { // UniswapSwap()
+        bytes memory selector = hex"469e635e";
+        bytes memory encoded1 = hex"0000000000000000000000000000000000000000000000000000000000000020"
+                                hex"0000000000000000000000000000000000000000000000000000000000000005"
+                                hex"0000000000000000000000000000000000000000000000000000000000000000"
+                                hex"0000000000000000000000000000000000000000000000000000000000000000"
+                                hex"0000000000000000000000000000000000000000000000000000000000000000"
+                                hex"0000000000000000000000000000000000000000000000000000000000000001"
+                                hex"0000000000000000000000000000000000000000000000000000000000000001";
+        bytes memory encoded2 = hex"000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+                                hex"0000000000000000000000004200000000000000000000000000000000000006"
+                                hex"000000000000000000000000132adfe17b67f91573f3853db9682d9e937e3c91"
+                                hex"00000000000000000000000000000000000000000000000000000000000186a0"
+                                hex"000000000000000000000000000000000000000000000000000000000000000a";
+
+        bytes[] memory actionData = new bytes[](3);
+        actionData[0] = selector;
+        actionData[1] = encoded1;
+        actionData[2] = encoded2;
+        
+        bool success = walletContract.defiAction(actionData, USER1);
+        assert(success);
+    }
+
     
 }
+
+// forge test --match-path test/unit/WalletContract.t.sol
