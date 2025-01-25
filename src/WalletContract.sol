@@ -7,13 +7,14 @@ import {DataDecoder} from "./lib/Decoder.sol";
 import {IFunctions} from "./interfaces/IFunctions.sol";
 import {IERC20} from "../lib/openzeppelin/contracts/interfaces/IERC20.sol";
 import {IWETH} from "../lib/weth/IWETH.sol";
+import {ReentrancyGuard} from "../lib/openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /**
 * @author AVZ.Tech
 * @notice User interacts with this contract trough `main.sol`
 *         Type1 means that user can use this contract as wallet to hold Funds
 */
-contract WalletContract {
+contract WalletContract is ReentrancyGuard {
 
     using DataDecoder for bytes[];
 
@@ -38,8 +39,8 @@ contract WalletContract {
     * @dev check if msg.sender in the MAIN.function is a allowed owner  
     */
     modifier accessControl(address _signer){
-        //bool isProtocol = roles.isProtocolContract(_signer);
-        //require(isProtocol, "access control: onlyProtocol");
+        bool isProtocol = roles.isProtocolContract(_signer);
+        require(isProtocol, "access control: onlyProtocol");
         require(owners[_signer], "access control: onlyOwner");
         _;
     }
@@ -63,10 +64,12 @@ contract WalletContract {
 
     receive() external payable{
         require(msg.value > 0, "Send more Ether");
+        IWETH(wEth).deposit{value : msg.value}();
+        isHolded[wEth] = true;
         emit EtherReceived(msg.sender, msg.value);
     }
 
-    function depositFunds(address _token, uint256 _value) public payable {
+    function depositFunds(address _token, uint256 _value) public payable nonReentrant() {
         if(_token == address(0) && msg.value == 0 || 
            _token != address(0) && msg.value > 0 ||
            _token != address(0) && _value == 0 
@@ -74,8 +77,6 @@ contract WalletContract {
         uint256 value;
         if(_token == address(0)){
             value = msg.value;
-            IWETH(wEth).deposit{value : msg.value}();
-            isHolded[wEth] = true;
         } else {
             value = _value;
             IERC20(_token).transferFrom(msg.sender, address(this), _value);
@@ -84,18 +85,17 @@ contract WalletContract {
         emit ContractFunded(_token, value);
     }
 
-    function withdrawFunds(address _token, uint256 _value, address _signer, address _recipient) public accessControl(_signer){
-        /*JUST for TEST*/ require(msg.sender == 0x132adfe17b67f91573f3853DB9682D9E937e3C91);
+    function withdrawFunds(address _token, uint256 _value, address _signer, address _recipient) public accessControl(_signer) nonReentrant(){
         IERC20(_token).transfer(_recipient, _value);
     }
 
-    function defiAction(bytes[] calldata _actionData, address _signer) public payable accessControl(_signer) returns(bool) {
+    function defiAction(bytes[] calldata _actionData, address _signer) public accessControl(_signer) nonReentrant() returns(bool) {
         (bytes4 functionSelector, ParamManagerLib.DeFiParam[] memory params) = _actionData.dataDecoder();
         (bool isRequired, uint8 token, uint8 amount) = functions.approveRequired(functionSelector);
         if(isRequired){
             approve(params[token].w, params[amount].x);
         }
-        bool success = functions.functionRouter{value : msg.value}(functionSelector, params);
+        bool success = functions.functionRouter(functionSelector, params);
         emit DeFiActionExecuted(functionSelector, params);
         return success;
     }

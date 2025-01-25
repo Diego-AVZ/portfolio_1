@@ -6,7 +6,16 @@ import {IUniswapV3PoolState} from "../../lib/v3-core/contracts/interfaces/pool/I
 import {UniswapUtils} from "./UniswapUtils.sol";
 
 library PoolSearcher {
- 
+    
+    /**
+    * @notice Searches for the most suitable pool to swap between two tokens (`tokenA` and `tokenB`) 
+    *      across a specified factory contract. The function iterates over predefined fee tiers
+    *      to locate pools and selects the best one based on predefined criteria.
+    * @param tokenA Address of the first token in the pair.
+    * @param tokenB Address of the second token in the pair.
+    * @param _factory Address of the factory contract responsible for creating and managing pools.
+    * @return poolToSwap The address of the selected pool for swapping, or `address(0)` if no valid pool is found.
+    */
     function searchPool(address tokenA, address tokenB, address _factory) external view returns(address poolToSwap) {
         uint24[] memory fees = new uint24[](4);
         fees[0] = 100;

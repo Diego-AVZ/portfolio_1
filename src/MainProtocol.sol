@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import {MainDataStorage} from "./MainDataStorage.sol";
 import {Factory} from "./Factory.sol";
-import {WalletContract} from "./WalletContract.sol";
+import {IWalletContract} from "./interfaces/IWalletContract.sol";
 
 contract Main {
 
@@ -15,8 +15,9 @@ contract Main {
         factory = Factory(_factory);
     }
 
-    function defiAction(bytes[] calldata _action) public payable{
-        address payable _contractAddress = payable(data.getUserData(msg.sender).contractAddress);
-        WalletContract(_contractAddress).defiAction{ value: msg.value }(_action, msg.sender);
+    function defiAction(bytes[] calldata _action) public {
+        address _contractAddress = data.getUserData(msg.sender).contractAddress;
+        IWalletContract(_contractAddress).defiAction(_action, msg.sender);
     }
+    
 }

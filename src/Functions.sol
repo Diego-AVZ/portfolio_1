@@ -27,7 +27,7 @@ contract Functions {
     address public constant UNI_V3_FACTORY = 0x248AB79Bbb9bC29bB72f7Cd42F17e054Fc40188e;
     address public constant AAVE_POOL = 0xA238Dd80C259a72e81d7e4664a9801593F98d1c5;
     */
-    function functionRouter(bytes4 _funcSelector, ParamManagerLib.DeFiParam[] memory _params) external payable returns(bool){
+    function functionRouter(bytes4 _funcSelector, ParamManagerLib.DeFiParam[] memory _params) external returns(bool){
         bytes4 f = _funcSelector;
         ParamManagerLib.DeFiParam[] memory p = _params;
         bool success;
