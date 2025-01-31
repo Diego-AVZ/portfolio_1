@@ -1,27 +1,11 @@
-# Protocol Interactions
-
-
-___________________ 
-|                 | 
-|    FORNT_END    | 
-|_________________| 
-       |
-       |
-_______↓_________              ___________________        ___________________
-|               |             |                  | <------| from SDK         |
-| MAIN_CONTRACT | ----------> | WALLET_CONTRACTs |------> | CUSTOM_FUNCTIONS |
-|_______________|             |__________________|        |__________________|
-                                    |     ↑                        |
-                                    |     |                        |
-                                    |     |                        |
-                                    |     |                        |
-   ________________           ______↓_____|_______        _________↓__________
-   |              |           |                  |        |                   |
-   |   UNISWAP    | <---------|    FUNCTIONS     |        |  OTHER_PROTOCOLs  |
-   |______________|           |__________________|        |___________________|
-                                       |
-                                       |  
-                                   ____↓______
-                                  |          |
-                                  |   AAVE   |
-                                  |__________|
+```mermaid
+graph TD;
+    FORNT_END --> MAIN_CONTRACT;
+    MAIN_CONTRACT --> WALLET_CONTRACTs;
+    MAIN_CONTRACT -->|from SDK| WALLET_CONTRACTs;
+    WALLET_CONTRACTs --> CUSTOM_FUNCTIONS;
+    CUSTOM_FUNCTIONS --> FUNCTIONS;
+    FUNCTIONS --> UNISWAP;
+    FUNCTIONS --> OTHER_PROTOCOLs;
+    FUNCTIONS --> AAVE;
+    UNISWAP -->|calls| FUNCTIONS;
