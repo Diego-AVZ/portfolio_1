@@ -36,17 +36,17 @@ library PoolSearcher {
         return poolToSwap;
     }
 
-    function checkPools(address token0, address token1, address _factory, uint24 _fee) public view returns(address pool) {
+    function checkPools(address token0, address token1, address _factory, uint24 _fee) internal view returns(address pool) {
         pool = UniswapV3Factory(_factory).getPool(token0, token1, _fee);
         return pool;
     }
 
-    function orderTokens(address tokenA, address tokenB) public pure returns(address token0, address token1){
+    function orderTokens(address tokenA, address tokenB) internal pure returns(address token0, address token1){
         address[] memory tokens = UniswapUtils.orderTokensInPool(tokenA, tokenB);
         return(tokens[0], tokens[1]);
     }
 
-    function searchBestPool(address[] memory _pools, uint8 _poolsCount) public view returns(address) {
+    function searchBestPool(address[] memory _pools, uint8 _poolsCount) internal view returns(address) {
         uint128[] memory liquidityInPools = new uint128[](_poolsCount);
         for(uint8 i = 0; i < 4; i++){
             if(_pools[i] != address(0)){
@@ -58,7 +58,7 @@ library PoolSearcher {
         return(_pools[bestLiquidity]);
     }
 
-    function getLargerLiquidity(uint128[] memory li) public pure returns(uint8){
+    function getLargerLiquidity(uint128[] memory li) internal pure returns(uint8){
         uint256 len = li.length;
         uint8 largerLiq = 0;
         for(uint8 i = 1; i < len; i++){

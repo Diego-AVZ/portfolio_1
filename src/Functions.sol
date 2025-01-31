@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity 0.8.24;
 
 import {ParamManagerLib} from "./lib/Params.sol";
 import {ISwapRouter02} from "../lib/v3-periphery/contracts/interfaces/ISwapRouter02.sol";
@@ -9,8 +9,9 @@ import {WalletContract} from "./WalletContract.sol";
 import {UniswapUtils} from "./lib/UniswapUtils.sol";
 import {IERC20} from "../lib/openzeppelin/contracts/interfaces/IERC20.sol";
 import {IPool} from "../lib/aave/contracts/interfaces/IPool.sol";
+import {ReentrancyGuard} from "../lib/openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract Functions {
+contract Functions is ReentrancyGuard {
 
     /** ARBITRUM
     address public constant SWAP_ROUTER = 0xE592427A0AEce92De3Edee1F18E0157C05861564;
@@ -27,16 +28,54 @@ contract Functions {
     address public constant UNI_V3_FACTORY = 0x248AB79Bbb9bC29bB72f7Cd42F17e054Fc40188e;
     address public constant AAVE_POOL = 0xA238Dd80C259a72e81d7e4664a9801593F98d1c5;
     */
-    function functionRouter(bytes4 _funcSelector, ParamManagerLib.DeFiParam[] memory _params) external returns(bool){
+
+    event SuppliedToAave(address indexed user, address asset, uint256 amount);
+
+
+    error InvalidParams(string functionName);
+
+    /**
+    * @notice Routes parameters to the corresponding function in the contract to execute the actions based on the function selector.
+    * @dev This function is called from WalletContracts with two inputs: 
+    *      - _functSelector: a bytes4 that refers to the internal function to call.
+    *      - _params: an array of DeFiParam structs containing the necessary parameters.
+    *      DeFiParam is a struct of types:
+    *      - 'w' for addresses
+    *      - 'x' for uints
+    *      - 'y' for ints
+    * @param _functSelector The bytes4 function selector to determine which internal function to call.
+    * @param _params An array of DeFiParam structs containing the parameters needed by the function being called.
+    * @return success Returns a boolean indicating whether the operation was successful.
+    */
+    function functionRouter(bytes4 _funcSelector, ParamManagerLib.DeFiParam[] memory _params) external nonReentrant() returns(bool){
         bytes4 f = _funcSelector;
         ParamManagerLib.DeFiParam[] memory p = _params;
         bool success;
         if(f == 0xee5b3814){
-            success = swap(p[0].w, p[1].w, p[2].x, p[3].x);
+            success = swap(
+                p[0].w, 
+                p[1].w, 
+                p[2].x, 
+                p[3].x
+            );
         } else if(f == 0x88bd413e){
-            addLiquidity01(p[0].x, uint24(p[1].x), int24(p[2].y), int24(p[3].y), p[4].x, p[5].x);
+            addLiquidity01(
+                p[0].x, 
+                uint24(p[1].x),
+                int24(p[2].y),
+                int24(p[3].y),
+                p[4].x, 
+                p[5].x
+            );
         }else if(f == 0x469e635e){
-            success = uniswapSwap(p[0].w, p[1].w, msg.sender, p[3].x, p[4].x);
+            success = uniswapSwap(
+                p[0].w, 
+                p[1].w, 
+                msg.sender, 
+                p[2].x, 
+                p[3].x
+            );
+
         } else {
             revert("Invalid function selector");
         }
@@ -69,7 +108,7 @@ contract Functions {
             address sender,
             uint256 amountIn,
             uint256 slippage
-        ) public returns(bool){
+        ) internal returns(bool){
             //require(msg.sender == address(this), "Access control");
             address pool = PoolSearcher.searchPool(tokenIn, tokenOut, UNI_V3_FACTORY);
             uint24 fee = UniswapUtils.getPoolFee(pool);
@@ -98,39 +137,73 @@ contract Functions {
             return(amountOut >= amountOutMin);
     }
 
+    
     function supplyAave(
             address _asset,
-            uint256 amount,
-            address sender
-        ) public returns(bool){
-            IERC20(_asset).transferFrom(sender, address(this), amount);
-            IPool(AAVE_POOL).supply(_asset, amount, sender, 0);
+            uint256 _amount,
+            address _sender
+        ) internal {
+            if(
+                _asset == address(0) ||
+                _sender == address(0) ||
+                _amount == 0
+            ) revert InvalidParams("supplyAave");
+            IERC20(_asset).transferFrom(_sender, address(this), _amount);
+            IERC20(_asset).approve(AAVE_POOL, _amount);
+            IPool(AAVE_POOL).supply(_asset, _amount, _sender, 0);
+            emit SuppliedToAave(_sender, _asset, _amount);
+    }
+
+
+    function borrowAave(
+            address _asset, 
+            uint256 _amount, 
+            address _sender
+        ) internal returns(bool) {
+            IPool(AAVE_POOL).borrow(_asset, _amount, 2, 0, _sender);
             return true;
     }
 
-    function borrowAave(address asset, uint256 amount, address sender) public returns(bool) {
-        IPool(AAVE_POOL).borrow(asset, amount, 2, 0, sender);
-        return true;
-    }
+    // funciones con Aave. 
+    /*Leverage Long  params(colateralToken, tokenToLong, percentageToLeverage)
+        se deposita un token, require(isInGetReservesList), se obtiene la cantidad que puede pedir:
+            IPool.getUserAccountData().availableBorrowsBase (que da lo que se puede pedir en "moneda base")
+            se obtiene el precio del token a pedir en moneda base => 
+                    address oracle = IPoolAddressesProvider.getPriceOracle()
+                    uint tokenPriceInBase = IPriceOracle(priceOracle).getAssetPrice(tokenAddress)
+            con tokenPriceInBase => uint256 maxBorrowInToken = availableBorrowsBase * (10**decimals) / tokenPriceInBase;
+            Pedimos el un % del maximo en USDC o wETH y hacemos Swap en Uniswap por tokenToLong
+            
+            PROBLEMA si se le va a liquidar al usuario, como hace un repay con menos dinero, es decir, al deshacer la operación
 
-    function approveRequired(bytes4 _funcSelector) external pure returns(bool isRequired, uint8 token, uint8 amount){
+            FLUJO. walletContract tiene wBTC, user firma leverageLong(wBTC, wETH, 85(%)) =>
+                    se aprueba wBTC, se ejecuta supplyAave(), this.Contract recibe los tokens de awBTC
+                    se ejecuta BorrowAave(USDC, maxBorrowInToken*85%, this.contract) 
+                    se ejecuta uniswapSwap(USDC, tokenToLong, address(this), amountUSDC, slipagge)
+                    se envian los tokens de aaveWBTC (creo que estarán en addressThis) y el tokenToLong al contrato
+    */
+
+    function approveRequired(bytes4 _funcSelector) external pure returns(bool isRequired, uint8[] memory, uint8[] memory, uint8 approvals){
         bytes4 f = _funcSelector;
+        uint8[] memory tokens = new uint8[](5);
+        uint8[] memory amounts = new uint8[](5);
         if(f == 0xee5b3814){
             //
             isRequired = false;
-            token = 0;
-            amount = 0;
         } else if(f == 0x88bd413e){
             //
         }else if(f == 0x469e635e){
             //uniswapSwap();
             isRequired = true;
-            token = 0;
-            amount = 3;
+            approvals = 1;
+            tokens[0] = 0;
+            amounts[0] = 3;
         } else {
             revert("Invalid function selector");
         }
-        return(isRequired, token, amount);
+        return(isRequired, tokens, amounts, approvals);
     }
 
 }
+
+//////////////////

@@ -48,21 +48,25 @@ contract MockFunctions {
             }
         }
 
-    function approveRequired(bytes4 _funcSelector) external pure returns(bool isRequired, uint8 token, uint8 amount){
+    function approveRequired(bytes4 _funcSelector) external pure returns(bool isRequired, uint8[] memory, uint8[] memory, uint8 approvals){
         bytes4 f = _funcSelector;
+        uint8[] memory tokens = new uint8[](5);
+        uint8[] memory amounts = new uint8[](5);
         if(f == 0xee5b3814){
             //
+            isRequired = false;
         } else if(f == 0x88bd413e){
             //
         }else if(f == 0x469e635e){
             //uniswapSwap();
-            isRequired = false;
-            token = 0;
-            amount = 3;
+            isRequired = true;
+            approvals = 1;
+            tokens[0] = 0;
+            amounts[0] = 3;
         } else {
             revert("Invalid function selector");
         }
-        return(isRequired, token, amount);
+        return(isRequired, tokens, amounts, approvals);
     }
 
 }

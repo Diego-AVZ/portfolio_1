@@ -3,6 +3,8 @@ pragma solidity ^0.8.24;
 
 contract Roles {
 
+    error InvalidAddress(string functionName);
+
     modifier onlyAdmins(){
         require(isAdmin[msg.sender], "Access denied: caller is not an admin");
         require(AdminPenalities[msg.sender] == 0, "Access denied: admin is penalized");
@@ -30,6 +32,7 @@ contract Roles {
             string calldata _name, 
             string calldata _description
         ) public onlyAdmins {
+            if(_newContractAddress == address(0)) revert InvalidAddress("setProtocolContract");
             Contract memory _newContract = Contract(
                 {
                     isProtocolContract : true,
@@ -42,6 +45,7 @@ contract Roles {
 
     function addAdmin(address newAdmin) public {
         require(msg.sender == ADMIN1);
+        if (newAdmin == address(0)) revert InvalidAddress("addAdmin");
         isAdmin[newAdmin] = true;
     }
 

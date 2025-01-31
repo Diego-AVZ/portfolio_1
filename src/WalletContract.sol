@@ -5,7 +5,7 @@ import {Roles} from "./admins/Roles.sol";
 import {ParamManagerLib} from "./lib/Params.sol";
 import {DataDecoder} from "./lib/Decoder.sol";
 import {IFunctions} from "./interfaces/IFunctions.sol";
-import {IERC20} from "../lib/openzeppelin/contracts/interfaces/IERC20.sol";
+import {IERC20} from "../lib/openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IWETH} from "../lib/weth/IWETH.sol";
 import {ReentrancyGuard} from "../lib/openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
@@ -61,6 +61,7 @@ contract WalletContract is ReentrancyGuard {
      ////////////////  MAPPINGS  ////////////////
     ////////////////////////////////////////////
     mapping(address => bool) internal isHolded;
+    mapping(address => bool) internal isLocked;
 
     receive() external payable{
         require(msg.value > 0, "Send more Ether");
@@ -69,20 +70,26 @@ contract WalletContract is ReentrancyGuard {
         emit EtherReceived(msg.sender, msg.value);
     }
 
-    function depositFunds(address _token, uint256 _value) public payable nonReentrant() {
-        if(_token == address(0) && msg.value == 0 || 
-           _token != address(0) && msg.value > 0 ||
-           _token != address(0) && _value == 0 
+    function depositFunds(address _signer, address _token, uint256 _value) external payable accessControl(_signer) nonReentrant() {
+        if(
+            _token == address(0) && msg.value == 0 || 
+            _token != address(0) && msg.value > 0 ||
+            _token != address(0) && _value == 0 
         ) revert InvalidParams("depositFunds");
         uint256 value;
         if(_token == address(0)){
             value = msg.value;
         } else {
             value = _value;
-            IERC20(_token).transferFrom(msg.sender, address(this), _value);
+            IERC20(_token).transferFrom(_signer, address(this), _value);
             isHolded[_token] = true;
         }
         emit ContractFunded(_token, value);
+    }
+
+    function depositNonWithdrawableToken(address _signer, address _token, uint256 _amount) external accessControl(_signer){
+        isLocked[_token] = true;
+        depositFunds(_signer,_token, _ammount);
     }
 
     function withdrawFunds(address _token, uint256 _value, address _signer, address _recipient) public accessControl(_signer) nonReentrant(){
@@ -91,9 +98,11 @@ contract WalletContract is ReentrancyGuard {
 
     function defiAction(bytes[] calldata _actionData, address _signer) public accessControl(_signer) nonReentrant() returns(bool) {
         (bytes4 functionSelector, ParamManagerLib.DeFiParam[] memory params) = _actionData.dataDecoder();
-        (bool isRequired, uint8 token, uint8 amount) = functions.approveRequired(functionSelector);
+        (bool isRequired, uint8[] memory tokens, uint8[] memory amounts, uint8 approvals) = functions.approveRequired(functionSelector);
         if(isRequired){
-            approve(params[token].w, params[amount].x);
+            for(uint8 i = 0; i < approvals; i++){
+                approve(params[tokens[i]].w, params[amounts[i]].x);
+            }
         }
         bool success = functions.functionRouter(functionSelector, params);
         emit DeFiActionExecuted(functionSelector, params);

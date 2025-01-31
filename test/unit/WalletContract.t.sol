@@ -8,9 +8,11 @@ import {TestWEth} from "../mock/MockWEth.sol";
 import {MockFunctions} from "../mock/MockFunctions.sol";
 import {WalletContract} from "../../src/WalletContract.sol";
 import {IERC20} from "../../lib/openzeppelin/contracts/interfaces/IERC20.sol";
+import {MockERC20} from "../mock/MockERC20.sol";
 
 contract test_WalletContract is Test {
 
+    MockERC20 public usdc;
     WalletContract public walletContract;
     TestToken public testToken;
     TestWEth public testWEth;
@@ -20,11 +22,20 @@ contract test_WalletContract is Test {
     address public constant USER1 = address(0x12345);
 
     function setUp() public {
+        usdc = new MockERC20(USER1);
+        address mainnetUsdc =  0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913;
+        vm.etch(mainnetUsdc, address(usdc).code);
         mockFunctions = new MockFunctions();
         mockRoles = new MockRoles();
         testWEth = new TestWEth();
         walletContract = new WalletContract(USER1,address(0),address(mockFunctions), address(mockRoles), address(testWEth));
         testToken = new TestToken(USER1);
+    }
+
+    function test_app() public  {
+        IERC20(0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913).approve(address(mockFunctions), 1000);
+        uint allow = IERC20(0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913).allowance(address(this), address(mockFunctions));
+        assertEq(allow, 1000);
     }
 
     function test_receive() public {
@@ -98,6 +109,7 @@ contract test_WalletContract is Test {
         actionData[2] = encoded2;
         
         bool success = walletContract.defiAction(actionData, USER1);
+        console.log("LOG LOG LOG => ", success);
         assert(success);
     }
 

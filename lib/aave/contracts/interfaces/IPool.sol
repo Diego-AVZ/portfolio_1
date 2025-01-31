@@ -38,5 +38,7 @@ interface IPool {
     uint16 referralCode,
     address onBehalfOf
   ) external;
+
+  function getReservesList() external view returns (address[] memory);
   
 }

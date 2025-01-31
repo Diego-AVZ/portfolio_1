@@ -2,11 +2,10 @@ import { AbiCoder } from "ethers";
 
 
 const functionSelector = "0x469e635e";
-const paramTypes = [0,0,0,1,1];
+const paramTypes = [0,0,1,1];
 const params = [
     "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
     "0x4200000000000000000000000000000000000006",
-    "0x132adfe17b67f91573f3853DB9682D9E937e3C91",
     100000,
     10
 ];

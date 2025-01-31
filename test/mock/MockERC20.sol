@@ -8,3 +8,9 @@ contract TestToken is ERC20("test", "TEST") {
         _mint(_deployer, 1000000);
     }
 }
+
+contract MockERC20 is ERC20("usdc", "usdc") {
+    constructor(address _deployer){
+        _mint(_deployer, 1000000);
+    }
+}
