@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import {Test, console} from "forge-std/Test.sol";
 import {UsersLib} from "../../src/lib/Users.sol";
 import {MockRoles} from "../mock/MockRoles.sol";
-import {MainDataStorage} from "../../src/MainDataStorage.sol";
+import {MainDataStorage} from "../../src/core/MainDataStorage.sol";
 
 contract MainDataStorageTest is Test {
 

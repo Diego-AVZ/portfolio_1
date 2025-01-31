@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import {MainDataStorage} from "./MainDataStorage.sol";
 import {Factory} from "./Factory.sol";
-import {IWalletContract} from "./interfaces/IWalletContract.sol";
+import {IWalletContract} from "../interfaces/IWalletContract.sol";
 
 contract Main {
 

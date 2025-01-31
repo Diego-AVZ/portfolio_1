@@ -6,7 +6,7 @@ import {MockRoles} from "../mock/MockRoles.sol";
 import {TestToken} from "../mock/MockERC20.sol";
 import {TestWEth} from "../mock/MockWEth.sol";
 import {MockFunctions} from "../mock/MockFunctions.sol";
-import {WalletContract} from "../../src/WalletContract.sol";
+import {WalletContract} from "../../src/core/WalletContract.sol";
 import {IERC20} from "../../lib/openzeppelin/contracts/interfaces/IERC20.sol";
 import {MockERC20} from "../mock/MockERC20.sol";
 
@@ -28,7 +28,7 @@ contract test_WalletContract is Test {
         mockFunctions = new MockFunctions();
         mockRoles = new MockRoles();
         testWEth = new TestWEth();
-        walletContract = new WalletContract(USER1,address(0),address(mockFunctions), address(mockRoles), address(testWEth));
+        walletContract = new WalletContract(USER1,address(0), address(mockFunctions), address(mockRoles), address(testWEth));
         testToken = new TestToken(USER1);
     }
 
@@ -48,7 +48,7 @@ contract test_WalletContract is Test {
     function test_depositFunds_ether() public {
         //vm.deal(USER1, 10 ether);
         //assertEq(USER1.balance, 10 ether);
-        walletContract.depositFunds{value : 3 ether}(address(0), 3 ether);
+        walletContract.depositFunds{value : 3 ether}(USER1, address(0), 3 ether);
         uint256 balance = testWEth.balanceOf(address(walletContract));
         assertEq(balance, 3*1e18);
     }
@@ -56,7 +56,7 @@ contract test_WalletContract is Test {
     function test_depositFunds_erc20() public{
         vm.startPrank(USER1);
         testToken.approve(address(walletContract), 3000);
-        walletContract.depositFunds{value : 0 ether}(address(testToken), 3000);
+        walletContract.depositFunds{value : 0 ether}(USER1, address(testToken), 3000);
         uint256 balance = testToken.balanceOf(address(walletContract));
         assert(balance == 3000);
     }

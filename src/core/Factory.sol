@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import {WalletContract} from "./WalletContract.sol";
 import {MainDataStorage} from "./MainDataStorage.sol";
-import {Roles} from "./admins/Roles.sol";
+import {Roles} from "../admins/Roles.sol";
 
 contract Factory {
 

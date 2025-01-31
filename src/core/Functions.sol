@@ -1,15 +1,16 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
-import {ParamManagerLib} from "./lib/Params.sol";
-import {ISwapRouter02} from "../lib/v3-periphery/contracts/interfaces/ISwapRouter02.sol";
-import {IV3SwapRouter} from "../lib/v3-periphery/contracts/interfaces/IV3SwapRouter.sol";import {IUniswapV3PoolState} from "../lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol";
-import {PoolSearcher} from "./lib/UniswapPoolSearch.sol";
+import {ParamManagerLib} from "../lib/Params.sol";
+import {ISwapRouter02} from "../../lib/v3-periphery/contracts/interfaces/ISwapRouter02.sol";
+import {IV3SwapRouter} from "../../lib/v3-periphery/contracts/interfaces/IV3SwapRouter.sol";
+import {IUniswapV3PoolState} from "../../lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol";
+import {PoolSearcher} from "../lib/UniswapPoolSearch.sol";
 import {WalletContract} from "./WalletContract.sol";
-import {UniswapUtils} from "./lib/UniswapUtils.sol";
-import {IERC20} from "../lib/openzeppelin/contracts/interfaces/IERC20.sol";
-import {IPool} from "../lib/aave/contracts/interfaces/IPool.sol";
-import {ReentrancyGuard} from "../lib/openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import {UniswapUtils} from "../lib/UniswapUtils.sol";
+import {IERC20} from "../../lib/openzeppelin/contracts/interfaces/IERC20.sol";
+import {IPool} from "../../lib/aave/contracts/interfaces/IPool.sol";
+import {ReentrancyGuard} from "../../lib/openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 contract Functions is ReentrancyGuard {
 
@@ -45,7 +46,7 @@ contract Functions is ReentrancyGuard {
     *      - 'x' for uints
     *      - 'y' for ints
     *      - 'z' for bool
-    * @param _functSelector The bytes4 function selector to determine which internal function to call.
+    * @param _funcSelector The bytes4 function selector to determine which internal function to call.
     * @param _params An array of DeFiParam structs containing the parameters needed by the function being called.
     * @return success Returns a boolean indicating whether the operation was successful.
     */

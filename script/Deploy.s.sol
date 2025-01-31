@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24; 
 
 import {Script, console} from "forge-std/Script.sol";
-import {Functions} from "../src/Functions.sol";
+import {Functions} from "../src/core/Functions.sol";
 import {Roles} from "../src/admins/Roles.sol";
 
 contract Deploy is Script {

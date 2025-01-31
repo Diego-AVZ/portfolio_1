@@ -1,13 +1,13 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Roles} from "./admins/Roles.sol";
-import {ParamManagerLib} from "./lib/Params.sol";
-import {DataDecoder} from "./lib/Decoder.sol";
-import {IFunctions} from "./interfaces/IFunctions.sol";
-import {IERC20} from "../lib/openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {IWETH} from "../lib/weth/IWETH.sol";
-import {ReentrancyGuard} from "../lib/openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import {Roles} from "../admins/Roles.sol";
+import {ParamManagerLib} from "../lib/Params.sol";
+import {DataDecoder} from "../lib/Decoder.sol";
+import {IFunctions} from "../interfaces/IFunctions.sol";
+import {IERC20} from "../../lib/openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {IWETH} from "../../lib/weth/IWETH.sol";
+import {ReentrancyGuard} from "../../lib/openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /**
 * @author AVZ.Tech
@@ -70,7 +70,7 @@ contract WalletContract is ReentrancyGuard {
         emit EtherReceived(msg.sender, msg.value);
     }
 
-    function depositFunds(address _signer, address _token, uint256 _value) external payable accessControl(_signer) nonReentrant() {
+    function depositFunds(address _signer, address _token, uint256 _value) public payable accessControl(_signer) nonReentrant() {
         if(
             _token == address(0) && msg.value == 0 || 
             _token != address(0) && msg.value > 0 ||
@@ -88,8 +88,10 @@ contract WalletContract is ReentrancyGuard {
     }
 
     function depositNonWithdrawableToken(address _signer, address _token, uint256 _amount) external accessControl(_signer){
+        IERC20(_token).transferFrom(_signer, address(this), _amount);
         isLocked[_token] = true;
-        depositFunds(_signer,_token, _ammount);
+        isHolded[_token] = true;
+        emit ContractFunded(_token, _amount);
     }
 
     function withdrawFunds(address _token, uint256 _value, address _signer, address _recipient) public accessControl(_signer) nonReentrant(){

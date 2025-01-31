@@ -52,6 +52,7 @@ The architecture follows this structure:
 |   |   |   |-- BuildData.mjs
 |   |   |-- CustomFunctions.sol
 |   |   |-- README.MD
+|   |-- core
 |   |-- MainDataStorage.sol
 |   |-- Factory.sol
 |   |-- Functions.sol
