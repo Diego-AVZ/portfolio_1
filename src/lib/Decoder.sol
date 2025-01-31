@@ -31,7 +31,7 @@ library DataDecoder {
                 param.z = abi.decode(_data[2][offset:offset+32], (bool));
             } else if(paramsTypes[i] == 4){
                 param._type = 4;
-                param.v = abi.decode(_data[2][offset:offset+32], (bytes));
+                param.v = _data[2][offset:offset+32];
             } else {
                 revert InvalidParams("dataDecoder");
             }

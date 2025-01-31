@@ -40,9 +40,11 @@ contract Functions is ReentrancyGuard {
     *      - _functSelector: a bytes4 that refers to the internal function to call.
     *      - _params: an array of DeFiParam structs containing the necessary parameters.
     *      DeFiParam is a struct of types:
+    *      - 'v' for bytes
     *      - 'w' for addresses
     *      - 'x' for uints
     *      - 'y' for ints
+    *      - 'z' for bool
     * @param _functSelector The bytes4 function selector to determine which internal function to call.
     * @param _params An array of DeFiParam structs containing the parameters needed by the function being called.
     * @return success Returns a boolean indicating whether the operation was successful.
