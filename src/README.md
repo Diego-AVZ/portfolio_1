@@ -7,4 +7,5 @@ graph TD;
     FUNCTIONS --> UNISWAP;
     CUSTOM_FUNCTIONS --> OTHER_PROTOCOLs;
     FUNCTIONS --> AAVE;
-    UNISWAP -->|uniswapUtils||PoolSearcher| FUNCTIONS;
+    UNISWAP -->|uniswapUtils| FUNCTIONS;
+    UNISWAP -->|PoolSearcher| FUNCTIONS;
