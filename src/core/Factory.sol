@@ -17,6 +17,7 @@ contract Factory {
     }
     
     function deployNewContract(address _newUser) public {
+        require(roles.isProtocolContract(msg.sender), "access control");
         (address functions, , address wEth) = data.getContracts();
         WalletContract _newContract = new WalletContract(_newUser, address(0), functions, address(roles), wEth);
         data.createUser(_newUser, address(_newContract), 1);

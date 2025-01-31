@@ -43,6 +43,10 @@ contract Roles {
             protocolContracts[_newContractAddress] = _newContract;
     }
 
+    function deleteProtcolContract(address oldContract) public onlyAdmins {
+        protocolContracts[_oldContract].isProtocolCOntract = false;
+    }
+
     function addAdmin(address newAdmin) public {
         require(msg.sender == ADMIN1);
         if (newAdmin == address(0)) revert InvalidAddress("addAdmin");

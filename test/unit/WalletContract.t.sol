@@ -39,8 +39,6 @@ contract test_WalletContract is Test {
     }
 
     function test_receive() public {
-        //vm.deal(USER1, 10 ether);
-        //assertEq(USER1.balance, 10 ether);
         (bool success,) = payable(address(walletContract)).call{value: 1 ether}("");
         assert(success);
     }
