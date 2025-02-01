@@ -19,7 +19,12 @@ contract AaveExecutor {
 
     error SupplyAaveParamError();
 
-    mapping(address => mapping(address => uint256)) internal aTokensBalances;
+    struct aToken {
+        address token;
+        uint256 balance;
+    }
+
+    mapping(address => aToken[]) internal aTokensBalances;
 
     function supplyAave(
             address _asset,
