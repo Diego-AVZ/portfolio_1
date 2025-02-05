@@ -3,10 +3,15 @@ pragma solidity 0.8.24;
 
 import {Roles} from "../admins/Roles.sol";
 import {IPool} from "../../lib/aave/contracts/interfaces/IPool.sol";
+import {IPoolAddressesProvider} from "../../lib/aave/contracts/interfaces/IPoolAddressesProvider.sol";
+import {IPriceOracle} from "../../lib/aave/contracts/interfaces/IPriceOracle.sol";
 import {DataTypes} from "../../lib/aave/contracts/protocol/libraries/types/DataTypes.sol";
 import {IERC20} from "../../lib/openzeppelin/contracts/interfaces/IERC20.sol";
 
 contract AaveExecutor {
+
+    address public constant AAVE_POOL = 0xA238Dd80C259a72e81d7e4664a9801593F98d1c5;
+    address public constant ADDRESSES_PROV = 0xe20fCBdBfFC4Dd138cE8b2E6FBb6CB49777ad64D;
 
     constructor(address _roles){
         roles = Roles(_roles);
@@ -18,6 +23,7 @@ contract AaveExecutor {
     }
 
     error SupplyAaveParamError();
+    error InsufficientBorrowPower();
 
     struct aToken {
         address token;
@@ -51,8 +57,19 @@ contract AaveExecutor {
             uint256 _amount, 
             address _sender
         ) internal accessControl returns(bool) {
+            if(
+                calculateBorrowPower();
+            ) revert InsufficientBorrowPower();
             IPool(AAVE_POOL).borrow(_asset, _amount, 2, 0, _sender);
             return true;
+    }
+
+    function calculateBorrowPower(address _asset) public view returns(uint256 ) {
+        ReserveConfigurationMap memory config = IPool(AAVE_POOL).getReserveData(_asset).configuration;
+        uint256 LTV = config.data & (1 << 16 - 1);
+        address oracle = IPoolAddressesProvider(ADDRESSES_PROV).getPriceOracle();
+        uint256 price = IPriceOracle(oracle).getAssetPrice(_asset);
+        
     }
 
 }
