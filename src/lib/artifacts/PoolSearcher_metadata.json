@@ -1,116 +1,10 @@
 {
 	"compiler": {
-		"version": "0.8.24+commit.e11b9ed9"
+		"version": "0.8.28+commit.7893614a"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "token0",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "token1",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "_factory",
-						"type": "address"
-					},
-					{
-						"internalType": "uint24",
-						"name": "_fee",
-						"type": "uint24"
-					}
-				],
-				"name": "checkPools",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "pool",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint128[]",
-						"name": "li",
-						"type": "uint128[]"
-					}
-				],
-				"name": "getLargerLiquidity",
-				"outputs": [
-					{
-						"internalType": "uint8",
-						"name": "",
-						"type": "uint8"
-					}
-				],
-				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "tokenA",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "tokenB",
-						"type": "address"
-					}
-				],
-				"name": "orderTokens",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "token0",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "token1",
-						"type": "address"
-					}
-				],
-				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address[]",
-						"name": "_pools",
-						"type": "address[]"
-					},
-					{
-						"internalType": "uint8",
-						"name": "_poolsCount",
-						"type": "uint8"
-					}
-				],
-				"name": "searchBestPool",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
 			{
 				"inputs": [
 					{
@@ -143,12 +37,27 @@
 		],
 		"devdoc": {
 			"kind": "dev",
-			"methods": {},
+			"methods": {
+				"searchPool(address,address,address)": {
+					"params": {
+						"_factory": "Address of the factory contract responsible for creating and managing pools.",
+						"tokenA": "Address of the first token in the pair.",
+						"tokenB": "Address of the second token in the pair."
+					},
+					"returns": {
+						"poolToSwap": "The address of the selected pool for swapping, or `address(0)` if no valid pool is found."
+					}
+				}
+			},
 			"version": 1
 		},
 		"userdoc": {
 			"kind": "user",
-			"methods": {},
+			"methods": {
+				"searchPool(address,address,address)": {
+					"notice": "Searches for the most suitable pool to swap between two tokens (`tokenA` and `tokenB`)       across a specified factory contract. The function iterates over predefined fee tiers      to locate pools and selects the best one based on predefined criteria."
+				}
+			},
 			"version": 1
 		}
 	},
@@ -162,7 +71,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -185,11 +94,11 @@
 			]
 		},
 		"src/lib/UniswapPoolSearch.sol": {
-			"keccak256": "0xa5054cfd9b2088370edb2cf57be8a756c05f172fb37127d2400da6832553c7c4",
+			"keccak256": "0x89e8f938d2b8bb186ab100be578cf1a9f43f022853f8496fe9e7a02bc4ae8e99",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c1eebc5617cd67c4b7d24d10d6dbdad782965564911632a5fbaa0b731e058ea5",
-				"dweb:/ipfs/QmNVXuhNXxQBjzwXeVyWFCNA2sgsp4YA9pqEsgMUPqPf9L"
+				"bzz-raw://352721e1c66ba3005aa5f0189f87ad2958470c0b34f3c9e147e9f16301f1a52e",
+				"dweb:/ipfs/QmVvHqrgjEkiGrkB1y4eRWuUXFanA4ooEDA2yFQALCCBVJ"
 			]
 		},
 		"src/lib/UniswapUtils.sol": {

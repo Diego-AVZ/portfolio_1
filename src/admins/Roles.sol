@@ -43,8 +43,8 @@ contract Roles {
             protocolContracts[_newContractAddress] = _newContract;
     }
 
-    function deleteProtcolContract(address oldContract) public onlyAdmins {
-        protocolContracts[_oldContract].isProtocolCOntract = false;
+    function deleteProtcolContract(address _oldContract) public onlyAdmins {
+        protocolContracts[_oldContract].isProtocolContract = false;
     }
 
     function addAdmin(address newAdmin) public {

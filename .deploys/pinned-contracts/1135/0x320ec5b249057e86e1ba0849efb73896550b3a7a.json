@@ -1,0 +1,37 @@
+{
+  "name": "PoolSearcher",
+  "address": "0x320ec5b249057e86e1ba0849efb73896550b3a7a",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "tokenA",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "tokenB",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_factory",
+          "type": "address"
+        }
+      ],
+      "name": "searchPool",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "poolToSwap",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "filePath": " - connect to localhost - /src/lib/UniswapPoolSearch.sol",
+  "pinnedAt": 1738772206979
+}

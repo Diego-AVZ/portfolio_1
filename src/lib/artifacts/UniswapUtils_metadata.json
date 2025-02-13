@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.24+commit.e11b9ed9"
+		"version": "0.8.28+commit.7893614a"
 	},
 	"language": "Solidity",
 	"output": {
@@ -127,7 +127,7 @@
 		"compilationTarget": {
 			"src/lib/UniswapUtils.sol": "UniswapUtils"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "berlin",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -148,11 +148,11 @@
 			]
 		},
 		"src/lib/UniswapUtils.sol": {
-			"keccak256": "0xbc4f38b94b155b2ed92d0fe9974ec7f590890498abb6549ad674e9bcc2c9fe39",
+			"keccak256": "0xb0a37feaeca3d4817708dbe16bcfa7379298dc4be81e5ca10f7acdd0956c8562",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://50dd0d3504e6c4db1815f4face3d4822edf71eaafd25fe1c53e17658fe88bf49",
-				"dweb:/ipfs/QmNe7pYk2A3KR3DoKT5EKHZw6Fax6yq9f82ukwDfU9gFNe"
+				"bzz-raw://2bdb18bfd677b961ea70e6736ce6b18d42b1abc968e7b5712ba5f67c21770026",
+				"dweb:/ipfs/QmUKxEeVAaoXK17kS1qY1J4GoRhNtFpP55bkXZf3uSeNno"
 			]
 		}
 	},
