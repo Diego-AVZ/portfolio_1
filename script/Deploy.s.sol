@@ -3,13 +3,15 @@ pragma solidity ^0.8.24;
 
 import {Script, console} from "forge-std/Script.sol";
 import {Functions} from "../src/core/Functions.sol";
+import {MainDataStorage} from "../src/core/MainDataStorage.sol";
 import {Roles} from "../src/admins/Roles.sol";
 
 contract Deploy is Script {
     function run() external {
         vm.startBroadcast(); 
-        Functions functions = new Functions();
-        console.log("functions deployed at:", address(functions));
+        //MainDataStorage data = new MainDataStorage();
+        //Functions functions = new Functions(data);
+        //console.log("functions deployed at:", address(functions));
         //verify("Functions", address(functions));
         vm.stopBroadcast();
     }
