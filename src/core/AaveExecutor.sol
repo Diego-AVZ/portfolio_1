@@ -7,15 +7,17 @@ import {IPoolAddressesProvider} from "../../lib/aave/contracts/interfaces/IPoolA
 import {IPriceOracle} from "../../lib/aave/contracts/interfaces/IPriceOracle.sol";
 import {DataTypes} from "../../lib/aave/contracts/protocol/libraries/types/DataTypes.sol";
 import {IERC20} from "../../lib/openzeppelin/contracts/interfaces/IERC20.sol";
-import {AaveUtils} from "../lib/Aave/AaveUtils.sol";
+import {AaveUtils} from "./AaveUtils.sol";
 
 contract AaveExecutor {
 
     address public constant AAVE_POOL = 0xA238Dd80C259a72e81d7e4664a9801593F98d1c5;
     Roles public roles;
+    address public aaveUtils;
 
-    constructor(address _roles){
+    constructor(address _roles, address _aaveUtils){
         roles = Roles(_roles);
+        aaveUtils = _aaveUtils;
     }
 
     modifier accessControl(){
@@ -50,9 +52,9 @@ contract AaveExecutor {
     }
 
     function addAToken(address _asset, address _acccount, uint256 amount) internal {
-        address aToken = AaveUtils.getReserveData(_asset);
+        address aToken = AaveUtils(aaveUtils).getReserveData(_asset);
         AaveUtils.AaveToken[] storage aaveTokens = aTokensBalances[_acccount];
-        uint8 index = AaveUtils.reviewATokens(aToken, aaveTokens);
+        uint8 index = AaveUtils(aaveUtils).reviewATokens(aToken, aaveTokens);
         if(index != 255){
             aTokensBalances[_acccount][index].balance += amount;
         } else {
@@ -71,19 +73,19 @@ contract AaveExecutor {
         returns(bool) {
             AaveUtils.AaveToken[] storage aaveTokens = aTokensBalances[_sender];
             if(
-                _value < AaveUtils.calculateMaxBorrowPower(aaveTokens) - userBorrowsInBase[_sender]
+                _value < AaveUtils(aaveUtils).calculateMaxBorrowPower(aaveTokens) - userBorrowsInBase[_sender]
             ) revert InsufficientBorrowPower();
             userBorrowsInBase[_sender] += _value;
-            uint256 amount = AaveUtils.valueToAmount(_asset, _value);
+            uint256 amount = AaveUtils(aaveUtils).valueToAmount(_asset, _value);
             IPool(AAVE_POOL).borrow(_asset, amount, 2, 0, _sender);
             IERC20(_asset).transfer(_sender, amount);
             return true;
     }
 
     function reduceATokens(address _asset, address _account, uint256 amount) internal {
-        address aToken = AaveUtils.getReserveData(_asset);
+        address aToken = AaveUtils(aaveUtils).getReserveData(_asset);
         AaveUtils.AaveToken[] storage aaveTokens = aTokensBalances[_account];
-        uint8 index = AaveUtils.reviewATokens(aToken, aaveTokens);
+        uint8 index = AaveUtils(aaveUtils).reviewATokens(aToken, aaveTokens);
         if(index != 255){
             aTokensBalances[_account][index].balance -= amount;
         }

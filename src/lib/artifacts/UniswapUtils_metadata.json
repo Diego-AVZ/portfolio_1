@@ -127,7 +127,7 @@
 		"compilationTarget": {
 			"src/lib/UniswapUtils.sol": "UniswapUtils"
 		},
-		"evmVersion": "berlin",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"

@@ -47,7 +47,7 @@ contract test_WalletContract is Test {
         //vm.deal(USER1, 10 ether);
         //assertEq(USER1.balance, 10 ether);
         walletContract.depositFunds{value : 3 ether}(USER1, address(0), 3 ether);
-        uint256 balance = testWEth.balanceOf(address(walletContract));
+        uint256 balance = address(walletContract).balance;
         assertEq(balance, 3*1e18);
     }
 

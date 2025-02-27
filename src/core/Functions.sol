@@ -43,12 +43,13 @@ contract Functions is ReentrancyGuard {
 
     error InvalidParams(string functionName);
 
+    /*
     modifier accessControl(){
         bool isValidContract = data.getUserData(msg.sender).contractAddress != address(0);
         require(isValidContract, "access control: only valid contracts");
         _;
     }
-
+    */
     /**
     * @notice Routes parameters to the corresponding function in the contract to execute the actions based on the function selector.
     * @dev This function is called from WalletContracts with two inputs: 
@@ -69,7 +70,7 @@ contract Functions is ReentrancyGuard {
             bytes4 _funcSelector, 
             ParamManagerLib.DeFiParam[] memory _params
         ) external 
-        accessControl 
+        //accessControl 
         nonReentrant 
         returns(
             bool
@@ -115,6 +116,7 @@ contract Functions is ReentrancyGuard {
             uint256 amountOutMin
         ) internal returns(bool){
         /*executor.swap();*/
+        return true;
     }
 
     function addLiquidity01(
@@ -199,7 +201,7 @@ contract Functions is ReentrancyGuard {
             isRequired = false;
         } else if(f == 0x88bd413e){
             //
-        }else if(f == 0x469e635e){
+        } else if(f == 0x469e635e){
             //uniswapSwap();
             isRequired = true;
             approvals = 1;

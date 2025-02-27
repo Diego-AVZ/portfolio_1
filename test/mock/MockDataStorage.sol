@@ -13,6 +13,11 @@ contract MockDataStorage {
 
     address public functions;
     address public wEth;
+    address public roles;
+
+    constructor(address _roles) {
+        roles = _roles;
+    }
 
     function createUser(
             address _newUser,
@@ -39,7 +44,7 @@ contract MockDataStorage {
     function getContracts() public view returns(address, address, address){
         return(
             functions,
-            address(0x123),
+            roles,
             wEth
         );
     }

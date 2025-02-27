@@ -65,7 +65,7 @@
 		"compilationTarget": {
 			"src/lib/UniswapPoolSearch.sol": "PoolSearcher"
 		},
-		"evmVersion": "berlin",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"

@@ -1,0 +1,430 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_secondOwner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_funct",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_roles",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_wEth",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "functionName",
+						"type": "string"
+					}
+				],
+				"name": "InvalidParams",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "ReentrancyGuardReentrantCall",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "ContractFunded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "bytes4",
+						"name": "functionSelector",
+						"type": "bytes4"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint8",
+								"name": "_type",
+								"type": "uint8"
+							},
+							{
+								"internalType": "bytes",
+								"name": "v",
+								"type": "bytes"
+							},
+							{
+								"internalType": "address",
+								"name": "w",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "x",
+								"type": "uint256"
+							},
+							{
+								"internalType": "int256",
+								"name": "y",
+								"type": "int256"
+							},
+							{
+								"internalType": "bool",
+								"name": "z",
+								"type": "bool"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct ParamManagerLib.DeFiParam[]",
+						"name": "params",
+						"type": "tuple[]"
+					}
+				],
+				"name": "DeFiActionExecuted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "EtherReceived",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes[]",
+						"name": "_actionData",
+						"type": "bytes[]"
+					},
+					{
+						"internalType": "address",
+						"name": "_signer",
+						"type": "address"
+					}
+				],
+				"name": "defiAction",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_signer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_value",
+						"type": "uint256"
+					}
+				],
+				"name": "depositFunds",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_signer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "depositNonWithdrawableToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes[]",
+						"name": "_data",
+						"type": "bytes[]"
+					},
+					{
+						"internalType": "address",
+						"name": "_signer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_customizedContract",
+						"type": "address"
+					}
+				],
+				"name": "extraDefiActions",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "functions",
+				"outputs": [
+					{
+						"internalType": "contract IFunctions",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "owners",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "roles",
+				"outputs": [
+					{
+						"internalType": "contract Roles",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "wEth",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_value",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_signer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_recipient",
+						"type": "address"
+					}
+				],
+				"name": "withdrawFunds",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"author": "AVZ.Tech",
+			"errors": {
+				"ReentrancyGuardReentrantCall()": [
+					{
+						"details": "Unauthorized reentrant call."
+					}
+				]
+			},
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "User interacts with this contract trough `main.sol`         Type1 means that user can use this contract as wallet to hold Funds",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"src/core/WalletContract.sol": "WalletContract"
+		},
+		"evmVersion": "berlin",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lib/openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0xe06a3f08a987af6ad2e1c1e774405d4fe08f1694b67517438b467cecf0da0ef7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://df6f0c459663c9858b6cba2cda1d14a7d05a985bed6d2de72bd8e78c25ee79db",
+				"dweb:/ipfs/QmeTTxZ7qVk9rjEv2R4CpCwdf8UMCcRqDNMvzNxHc3Fnn9"
+			]
+		},
+		"lib/openzeppelin/contracts/utils/ReentrancyGuard.sol": {
+			"keccak256": "0x11a5a79827df29e915a12740caf62fe21ebe27c08c9ae3e09abe9ee3ba3866d3",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://3cf0c69ab827e3251db9ee6a50647d62c90ba580a4d7bbff21f2bea39e7b2f4a",
+				"dweb:/ipfs/QmZiKwtKU1SBX4RGfQtY7PZfiapbbu6SZ9vizGQD9UHjRA"
+			]
+		},
+		"lib/weth/IWETH.sol": {
+			"keccak256": "0xafa73bab1fadb255986206d8397e23c12b49c55607718c892d3f33da7272d80f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8f5ab32a317439af1bde502bb0f7b8bbcb62b7d9330b1638e2a38fc36da25b5e",
+				"dweb:/ipfs/QmWr1JZpcQsMb53zSxZfzZCYUbSg6TMv15tan2oKRiaYbc"
+			]
+		},
+		"src/admins/Roles.sol": {
+			"keccak256": "0xac9c6f2615d4bb1880e2f5d82bdc4fa2b8dbade52f13e1fe92337b7377c49eda",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://fc2c7dcc1c9264d3cefffea3628b6d141e4b3adc099468309f1c1f22017c2f43",
+				"dweb:/ipfs/QmXrrHuuMwwfQQh1Ek5TFhrUAd6rCS7Ze4MdkG7RdLUcZN"
+			]
+		},
+		"src/core/WalletContract.sol": {
+			"keccak256": "0xf83cab1f2627dcce48037a98325b4e93e959ed9e2f9f76e3d7b4615c7f0c7f37",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8ace38e791b4c69c41c5635546bc147c176ad0557fa58ce6aef942f13494048f",
+				"dweb:/ipfs/QmeybhUZSs9kNtrhWVdYfjmXJKCv8cMGFec3kM4oPtr5vi"
+			]
+		},
+		"src/interfaces/IFunctions.sol": {
+			"keccak256": "0xb019ebec1b8557b918ee321318e3a047da566b6ebc1667fc80dae9b521beddb9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b3a31eed180d2c150a2aeca187325169ee52474dd66d18b1589d8687106302ce",
+				"dweb:/ipfs/QmXrNGz4zWgGLzh3q5bjUSQmu5coNaw5uwzm4NeysJSQHb"
+			]
+		},
+		"src/lib/Decoder.sol": {
+			"keccak256": "0xd2f92e87dd04563f4ef645ba9445a96d088079b5f47d3b7112b8050a084d65eb",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://459213eaa5564118ecf83e64bf9cbafcbed05e5cf912c32fb836c3e651323393",
+				"dweb:/ipfs/QmRcsm6HDWMgJzzznapYPdm1Ns7AVqg2RpWKqZtaEPocnd"
+			]
+		},
+		"src/lib/Params.sol": {
+			"keccak256": "0xfcbd9c458536ab3aa6eb1ffe46ced7891d0bc5ad7eef0beeb9a26cec40d41ddf",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0a8401a5a8ce10b9eee553ce7cfe05d0dc454e43236171b69b713666739edd7c",
+				"dweb:/ipfs/QmcKiTZfzd7gGf7At959cpCH34fjcuyq6p8GYRG8D79Ugz"
+			]
+		}
+	},
+	"version": 1
+}
